@@ -1,5 +1,5 @@
 import { ClipLoader } from "react-spinners";
-import { PrimaryMultiSelect } from "../../../components/multi-select/MultipleSelect";
+import { PrimaryMultiSelect } from "../../../../components/multi-select/MultipleSelect";
 import propTypes from "prop-types";
 import { GoPencil } from "react-icons/go";
 import ExperienceIcon from "assets/svg/experience.svg?react";
@@ -10,11 +10,11 @@ import {
   useAddExperienceMutation,
   useDeleteExperienceMutation,
   useEditExperienceMutation,
-} from "../../../features/auth/api";
+} from "../../../../features/auth/api";
 import { useFormik } from "formik";
-import { alert } from "../../../utils/alert";
-import { formatDate } from "../../../utils/helpers";
-import Modal from "../../../components/modal/Modal";
+import { alert } from "../../../../utils/alert";
+import { formatDate } from "../../../../utils/helpers";
+import Modal from "../../../../components/modal/Modal";
 
 const Experience = ({
   values: eValue,
@@ -111,7 +111,7 @@ const Experience = ({
           type: "success",
           message: "Profile Updated successfully",
           timer: 2000,
-          // cb: () => handleClose(),
+          cb: () => handleClose(),
         });
       })
       .catch((err) => {
@@ -241,6 +241,11 @@ const Experience = ({
             </p>
           )}
         </div>
+        {profile?.workExperience?.length === 0 && (
+          <p className="flex items-center justify-between mt-5 mb-3 text-black text-sm font-medium">
+            Experience
+          </p>
+        )}
 
         {!edit && (
           <div>
@@ -609,7 +614,9 @@ const Experience = ({
               onClick={toggleAdd}
               className="border text-sm  border-black rounded-md w-full h-8 flex justify-center items-center"
             >
-              + Add Another
+              {profile?.workExperience?.length === 0
+                ? "+ Add Experience"
+                : " + Add Another Experience"}
             </button>
           </div>
         )}

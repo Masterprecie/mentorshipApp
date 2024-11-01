@@ -14,7 +14,14 @@ import AboutPage from "./pages/about";
 import Services from "./pages/services";
 import Contact from "./pages/contact";
 import Signup from "./pages/auth/register";
-import Profile from "./pages/profile";
+import Profile from "./pages/dashboard/profile";
+import Settings from "./pages/dashboard/settings";
+import DashHome from "./pages/dashboard/dashHome";
+import Explore from "./pages/dashboard/explore";
+import { DashboardLayout } from "./layout";
+import { useEffect } from "react";
+import Bookings from "./pages/dashboard/bookings";
+import Messages from "./pages/dashboard/messages";
 
 const App = () => {
   const location = useLocation();
@@ -22,9 +29,14 @@ const App = () => {
   const showNavandFooter =
     location.pathname === "/signup" ||
     location.pathname === "/login" ||
-    location.pathname === "/verify-email"
+    location.pathname === "/verify-email" || 
+    location.pathname.includes('dashboard')
       ? false
       : true;
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Scroll to the top when the route changes
+  }, []);
 
   return (
     <div>
@@ -36,14 +48,24 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/available" element={<Available />} />
         <Route path="/about" element={<AboutPage />} />
-        <Route path="/profile" element={<Profile />} />
         <Route path="/blog" element={<Blog />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/services" element={<Services />} />
         <Route path="/all-mentors" element={<Mentors />} />
         <Route path="/mentor/:id" element={<MentorDetails />} />
         <Route path="/admin" element={<AdminDashboard />} />
+
+        {/* Dashboard Routes */}
+        <Route path="/dashboard" element={<DashboardLayout />}>
+          <Route path="home" element={<DashHome />} />
+          <Route path="explore" element={<Explore />} />
+          <Route path="settings" element={<Settings />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="messages" element={<Messages />} />
+          <Route path="bookings" element={<Bookings />} />
+        </Route>
       </Routes>
+
       {showNavandFooter && <Footer />}
     </div>
   );

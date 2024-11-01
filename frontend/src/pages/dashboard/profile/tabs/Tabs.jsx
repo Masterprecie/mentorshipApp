@@ -10,7 +10,7 @@ const Tabs = ({ tabs }) => {
 
   return (
     <div>
-      <div className="bg-white rounded-lg w-full  py-[12px]">
+      <div className="bg-transprent rounded-lg w-full  py-[12px]">
         <div className="border-b mt-[24px] space-x-8 ">
           {tabs.map((tab, index) => (
             <button

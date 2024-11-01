@@ -3,7 +3,7 @@ import { GoPencil } from "react-icons/go";
 import axios from "axios";
 import propTypes from "prop-types";
 
-const Avatar = ({ profilePicture, onFileChange }) => {
+const Avatar = ({ profilePicture, onFileChange, editable = true }) => {
   const fileInputRef = useRef(null);
   const [preview, setPreview] = useState(profilePicture);
   const [uploading, setUploading] = useState(false);
@@ -50,12 +50,14 @@ const Avatar = ({ profilePicture, onFileChange }) => {
         alt="Profile"
         className="w-full h-full rounded-full object-cover"
       />
-      <div
-        className="absolute bottom-0 right-0 bg-gray-800 text-white p-2 rounded-full cursor-pointer"
-        onClick={handleEditClick}
-      >
-        <GoPencil />
-      </div>
+      {editable && (
+        <div
+          className="absolute bottom-0 right-0 bg-gray-800 text-white p-2 rounded-full cursor-pointer"
+          onClick={handleEditClick}
+        >
+          <GoPencil />
+        </div>
+      )}
       <input
         type="file"
         ref={fileInputRef}
@@ -70,6 +72,7 @@ const Avatar = ({ profilePicture, onFileChange }) => {
 Avatar.propTypes = {
   profilePicture: propTypes.string,
   onFileChange: propTypes.func,
+  editable: propTypes.bool,
 };
 
 export default Avatar;

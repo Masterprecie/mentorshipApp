@@ -1,22 +1,22 @@
 import banner from "assets/images/banner.jpg";
-import Avatar from "../../components/avatar";
+import Avatar from "../../../components/avatar";
 import Overview from "./components/Overview";
 import MyMentors from "./components/Mentors";
 import Tabs from "./tabs/Tabs";
 import {
   useGetProfileQuery,
   useUpdateProfileMutation,
-} from "../../features/auth/api";
-import Modal from "../../components/modal/Modal";
+} from "../../../features/auth/api";
+import Modal from "../../../components/modal/Modal";
 import { useState } from "react";
 import BasicInfo from "./infoTabs/BasicInfo";
 import Experience from "./infoTabs/Experience";
 import SocialLink from "./infoTabs/SocialLink";
 import { useFormik } from "formik";
-import { alert } from "../../utils/alert";
+import { alert } from "../../../utils/alert";
 import Education from "./infoTabs/Education";
 const Profile = () => {
-  const { data: userProfile, isLoading } = useGetProfileQuery();
+  const { data: userProfile } = useGetProfileQuery();
 
   const [open, setOpen] = useState(false);
   const handleClose = () => {
@@ -28,6 +28,8 @@ const Profile = () => {
 
   const [updateProfile, { isLoading: loading }] = useUpdateProfileMutation();
   const profile = userProfile?.user;
+
+  console.log(profile);
 
   const handleEditProfile = (values) => {
     console.log(values);
@@ -69,7 +71,6 @@ const Profile = () => {
     handleChange,
     handleBlur,
     handleSubmit,
-    resetForm,
     setFieldValue,
   } = useFormik({
     enableReinitialize: true,
@@ -87,6 +88,7 @@ const Profile = () => {
       linkedinUrl: profile?.linkedinUrl || "",
       twitterUrl: profile?.twitterUrl || "",
       facebookUrl: profile?.facebookUrl || "",
+      websiteUrl: profile?.websiteUrl || "",
       expertise: profile?.expertise || "",
     },
     //    validationSchema: LoginValidationSchema,
@@ -103,7 +105,7 @@ const Profile = () => {
       ),
     },
     {
-      label: "My Mentors",
+      label: `${profile?.role === "mentor" ? "Mentees" : "My Mentors"}`,
       content: (
         <div>
           <MyMentors />
@@ -127,6 +129,7 @@ const Profile = () => {
             handleEditProfile={handleEditProfile}
             loading={loading}
             setFieldValue={setFieldValue}
+            profile={profile}
           />
         </div>
       ),
@@ -163,7 +166,14 @@ const Profile = () => {
       label: "Social Links",
       content: (
         <div>
-          <SocialLink />
+          <SocialLink
+            values={values}
+            handleChange={handleChange}
+            handleBlur={handleBlur}
+            handleSubmit={handleSubmit}
+            handleEditProfile={handleEditProfile}
+            loading={loading}
+          />
         </div>
       ),
     },
@@ -220,14 +230,22 @@ const Profile = () => {
               onFileChange={handleFileChange}
             />
 
-            <div>
+            <div className="pt-5">
               <h1>
                 {profile?.firstName} {profile?.lastName}
               </h1>
-              <p>
-                {profile?.workExperience[0].role} at{" "}
-                {profile?.workExperience[0].company}{" "}
-              </p>
+              {profile?.workExperience[0] && (
+                <div className="flex items-center gap-2">
+                  <span className="font-medium">
+                    {profile?.workExperience[0]?.role}
+                  </span>
+                  at{" "}
+                  <span className="font-medium">
+                    {profile?.workExperience[0]?.company}{" "}
+                  </span>
+                </div>
+              )}
+              <p>{profile?.yearsOfExperience} years of experience</p>
             </div>
           </div>
 

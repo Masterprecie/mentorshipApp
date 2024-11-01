@@ -1,6 +1,6 @@
-import { Link } from "react-router-dom";
 import { useGetAllMentorsQuery } from "../../features/mentors/api";
 import { useState } from "react";
+import MentorCard from "../../components/card/MentorCard";
 
 const Mentors = () => {
   const [searchQuery, setSearchQuery] = useState("");
@@ -11,7 +11,11 @@ const Mentors = () => {
     setSearchQuery(e.target.value);
   };
 
-  const { data: allMentors, isLoading, error } = useGetAllMentorsQuery({
+  const {
+    data: allMentors,
+    isLoading,
+    error,
+  } = useGetAllMentorsQuery({
     page: 1,
     limit: 10,
     search: searchQuery,
@@ -53,35 +57,21 @@ const Mentors = () => {
                   firstName,
                   lastName,
                   profilePictureURL,
-                  expertise,
-                  experience,
+                  workExperience,
+                  yearsOfExperience,
                 } = mentor;
                 return (
-                  <div key={_id} className="rounded-md shadow-md mb-5 md:mb-0">
-                    <div>
-                      <Link to={`/mentor/${_id}`}>
-                        <img
-                          src={profilePictureURL}
-                          alt="top-mentors"
-                          className="rounded-t-md w-full"
-                        />
-                      </Link>
-                    </div>
-                    <div className="bg-blue-700 text-white p-2 hover:bg-yellow-400 hover:text-black transition rounded-b-md">
-                      <p className="font-bold text-lg">
-                        {firstName},{" "}
-                        <span className="text-sm font-normal">{lastName}</span>
-                      </p>
-                      <p className="font-semibold">
-                        Expertise:{" "}
-                        <span className="text-black ">{expertise}</span>
-                      </p>
-                      <p className="font-semibold">
-                        Experience:{" "}
-                        <span className="text-black ">{experience}</span>
-                      </p>
-                    </div>
-                  </div>
+                  <MentorCard
+                    key={_id}
+                    mentor={{
+                      _id,
+                      firstName,
+                      lastName,
+                      profilePictureURL,
+                      workExperience,
+                      yearsOfExperience,
+                    }}
+                  />
                 );
               })}
             </div>

@@ -1,5 +1,5 @@
 import { ClipLoader } from "react-spinners";
-import { PrimaryMultiSelect } from "../../../components/multi-select/MultipleSelect";
+import { PrimaryMultiSelect } from "../../../../components/multi-select/MultipleSelect";
 import propTypes from "prop-types";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -12,6 +12,7 @@ const BasicInfo = ({
   errors,
   loading,
   setFieldValue,
+  profile,
 }) => {
   const [countries, setCountries] = useState([]);
   const interestOptions = [
@@ -154,29 +155,26 @@ const BasicInfo = ({
               <p className="text-red-500 font-semibold text-sm">{errors.age}</p>
             )}
           </div>
-          {/* Gender */}
+          {/* yearsOfExperience */}
           <div>
             <label
-              htmlFor="email"
+              htmlFor="yearsOfExperience"
               className="text-sm text-[#474747] font-medium block pb-2"
             >
-              Gender
+              Years of Experience
             </label>
-            <select
-              name="gender"
-              value={values.gender}
+            <input
+              type="number"
+              name="yearsOfExperience"
+              value={values.yearsOfExperience}
               onChange={handleChange}
               onBlur={handleBlur}
               className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
-            >
-              <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
+            />
 
-            {touched.gender && errors.gender && (
+            {touched.yearsOfExperience && errors.yearsOfExperience && (
               <p className="text-red-500 font-semibold text-sm">
-                {errors.gender}
+                {errors.yearsOfExperience}
               </p>
             )}
           </div>
@@ -238,28 +236,30 @@ const BasicInfo = ({
         </div>
 
         {/* Interest */}
-        <div>
-          <label
-            htmlFor="email"
-            className="text-sm text-[#474747] font-medium block pb-2"
-          >
-            Interest (2max)
-          </label>
+        {profile?.role === "mentee" ? (
+          <div>
+            <label
+              htmlFor="email"
+              className="text-sm text-[#474747] font-medium block pb-2"
+            >
+              Interest (2max)
+            </label>
 
-          <PrimaryMultiSelect
-            options={interestOptions}
-            value={values.interest}
-            onChange={(selectedOptions) =>
-              setFieldValue("interest", selectedOptions)
-            }
-            onBlur={() => handleBlur("interest")}
-          />
-          {touched.interest && errors.interest && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.interest}
-            </p>
-          )}
-        </div>
+            <PrimaryMultiSelect
+              options={interestOptions}
+              value={values.interest}
+              onChange={(selectedOptions) =>
+                setFieldValue("interest", selectedOptions)
+              }
+              onBlur={() => handleBlur("interest")}
+            />
+            {touched.interest && errors.interest && (
+              <p className="text-red-500 font-semibold text-sm">
+                {errors.interest}
+              </p>
+            )}
+          </div>
+        ) : null}
 
         {/* about */}
         <div className="col-span-2">
@@ -309,6 +309,7 @@ BasicInfo.propTypes = {
   errors: propTypes.object.isRequired,
   loading: propTypes.bool.isRequired,
   setFieldValue: propTypes.func.isRequired,
+  profile: propTypes.object.isRequired,
 };
 
 export default BasicInfo;

@@ -1,5 +1,5 @@
 import { Link, useLocation } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { navLinks } from "../../utils/data";
 import { logout } from "../../features/auth/slice";
 import { useDispatch } from "react-redux";
@@ -15,6 +15,20 @@ const NavBar = () => {
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const [activeLink, setActiveLink] = useState(location.pathname);
+  const dropdownRef = useRef(null);
+
+  const handleClickOutside = (e) => {
+    if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+      setDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   useEffect(() => {
     setActiveLink(location.pathname);
@@ -122,11 +136,11 @@ const NavBar = () => {
               <ul className="space-y-1">
                 <li className="flex items-center gap-2 py-2 hover:border-b-2 border-yellow-400 cursor-pointer duration-500 transition-all">
                   <FaRegUserCircle />
-                  <Link to="/profile">Profile</Link>
+                  <Link to="/dashboard/profile">Profile</Link>
                 </li>
                 <li className="flex items-center gap-2 py-2 hover:border-b-2 border-yellow-400 cursor-pointer duration-500 transition-all">
                   <IoSettingsOutline />
-                  <Link to="/settings">Settings</Link>
+                  <Link to="/dashboard/settings">Settings</Link>
                 </li>
                 <li
                   onClick={handleLogout}
@@ -181,9 +195,13 @@ const NavBar = () => {
             <div className="flex gap-4 items-center">
               <div>
                 {isAuthenticated ? (
-                  <div className="relative flex gap-3  items-center">
+                  <div
+                    onClick={toggleDropdown}
+                    ref={dropdownRef}
+                    className="relative flex gap-3  items-center"
+                  >
                     <FaRegUserCircle />
-                    <p className="text-white font-bold">
+                    <p className="text-white font-bold cursor-pointer">
                       {user.firstName} {user.lastName}
                     </p>
                     <IoMdArrowDropdown
@@ -194,13 +212,25 @@ const NavBar = () => {
                     {dropdown && (
                       <div className="absolute top-full right-0 bg-white text-black py-2 rounded-md shadow-lg">
                         <ul className="space-y-1">
-                          <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 cursor-pointer duration-500 transition-all">
-                            <FaRegUserCircle />
-                            <Link to="/profile">Profile</Link>
+                          <li>
+                            <Link
+                              to="/dashboard/profile"
+                              onClick={toggleDropdown}
+                              className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 cursor-pointer duration-500 transition-all"
+                            >
+                              <FaRegUserCircle />
+                              Profile
+                            </Link>
                           </li>
-                          <li className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 cursor-pointer duration-500 transition-all">
-                            <IoSettingsOutline />
-                            <Link to="/settings">Settings</Link>
+                          <li>
+                            <Link
+                              to="/dashboard/settings"
+                              onClick={toggleDropdown}
+                              className="flex items-center gap-2 px-4 py-2 hover:bg-gray-200 cursor-pointer duration-500 transition-all"
+                            >
+                              <IoSettingsOutline />
+                              Settings
+                            </Link>
                           </li>
                           <li
                             onClick={handleLogout}

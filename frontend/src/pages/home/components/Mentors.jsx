@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { useGetAllMentorsQuery } from "../../../features/mentors/api";
+import MentorCard from "../../../components/card/MentorCard";
 
 const Mentors = () => {
   const { data: allMentors, isLoading } = useGetAllMentorsQuery({
@@ -42,32 +43,21 @@ const Mentors = () => {
               firstName,
               lastName,
               profilePictureURL,
-              expertise,
-              experience,
+              workExperience,
+              yearsOfExperience,
             } = mentor;
             return (
-              <div key={_id} className="rounded-md shadow-md mb-5 md:mb-0">
-                <div>
-                  <img
-                    src={profilePictureURL || "https://placeholder.com/50"}
-                    alt="top-mentors"
-                    className="rounded-t-md w-full"
-                  />
-                </div>
-                <div className="bg-blue-700 text-white p-2 hover:bg-yellow-400 hover:text-black transition rounded-b-md">
-                  <p className="font-bold text-lg">
-                    {firstName},
-                    <span className="text-sm font-normal">{lastName}</span>
-                  </p>
-                  <p className="font-semibold">
-                    Expertise: <span className="text-black ">{expertise}</span>{" "}
-                  </p>
-                  <p className="font-semibold">
-                    Experience:{" "}
-                    <span className="text-black ">{experience}</span>{" "}
-                  </p>
-                </div>
-              </div>
+              <MentorCard
+                key={_id}
+                mentor={{
+                  _id,
+                  firstName,
+                  lastName,
+                  profilePictureURL,
+                  workExperience,
+                  yearsOfExperience,
+                }}
+              />
             );
           })}
         </div>

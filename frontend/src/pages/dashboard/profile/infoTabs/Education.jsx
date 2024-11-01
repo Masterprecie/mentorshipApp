@@ -9,11 +9,11 @@ import {
   useAddEducationMutation,
   useDeleteEducationMutation,
   useEditEducationMutation,
-} from "../../../features/auth/api";
+} from "../../../../features/auth/api";
 import { useFormik } from "formik";
-import { alert } from "../../../utils/alert";
-import { formatDate } from "../../../utils/helpers";
-import Modal from "../../../components/modal/Modal";
+import { alert } from "../../../../utils/alert";
+import { formatDate } from "../../../../utils/helpers";
+import Modal from "../../../../components/modal/Modal";
 
 const Education = ({ handleClose, profile }) => {
   const [open, setOpen] = useState(false);
@@ -180,8 +180,13 @@ const Education = ({ handleClose, profile }) => {
   return (
     <div>
       <div className="space-y-5">
-        {/* Education */}
+        {profile?.education?.length === 0 && (
+          <p className="flex items-center justify-between mt-5 mb-3 text-black text-sm font-medium">
+            Education
+          </p>
+        )}
 
+        {/* Education */}
         {!edit && (
           <div>
             {profile?.education?.map((edu) => (
@@ -455,7 +460,9 @@ const Education = ({ handleClose, profile }) => {
               onClick={toggleAdd}
               className="border text-sm  border-black rounded-md w-full h-8 flex justify-center items-center"
             >
-              + Add Another
+              {profile?.education?.length === 0
+                ? "+ Add Education"
+                : " + Add Another Education"}
             </button>
           </div>
         )}
