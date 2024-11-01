@@ -5,7 +5,6 @@ import { Link, useNavigate } from "react-router-dom";
 import Tabs from "../../../components/tab-switch/Tabs";
 import MenteeForm from "./forms/MenteeForm";
 import MentorForm from "./forms/MentorForm";
-// import { ClipLoader } from "react-spinners";
 import { useFormik } from "formik";
 import { useRegisterMutation } from "../../../features/auth/api";
 import { alert } from "../../../utils/alert";

@@ -45,7 +45,7 @@ const customStyles = {
 
 export const PrimaryMultiSelect = ({ options, value, onChange, onBlur }) => {
   const selectedOptions = options.filter((option) =>
-    value.includes(option.value)
+    value?.includes(option.value)
   );
 
   return (

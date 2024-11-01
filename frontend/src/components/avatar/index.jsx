@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { GoPencil } from "react-icons/go";
 import axios from "axios";
 import propTypes from "prop-types";
@@ -9,6 +9,10 @@ const Avatar = ({ profilePicture, onFileChange }) => {
   const [uploading, setUploading] = useState(false);
   const cloudinaryCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_UPLOAD_PRESET;
+
+  useEffect(() => {
+    setPreview(profilePicture);
+  }, [profilePicture]);
 
   const handleEditClick = () => {
     fileInputRef.current.click();

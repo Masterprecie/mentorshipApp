@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useGetMentorByIdQuery } from "../../features/mentors/api";
 
@@ -57,7 +57,11 @@ const MentorDetails = () => {
       <div className="text-center text-3xl font-bold pb-8">
         <h1>Mentor Details</h1>
       </div>
-      {singleMentor ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>Error: {error.message}</p>
+      ) : singleMentor ? (
         <div>
           <div className="md:grid gap-5 grid-cols-3 border-2 shadow-md p-2">
             <div>
@@ -82,7 +86,9 @@ const MentorDetails = () => {
               </p>
               <p className="font-bold text-2xl">
                 Experience:{" "}
-                <span className="font-semibold">{singleMentor.yearsOfExperience}</span>{" "}
+                <span className="font-semibold">
+                  {singleMentor.yearsOfExperience}
+                </span>{" "}
                 year(s)
               </p>
             </div>

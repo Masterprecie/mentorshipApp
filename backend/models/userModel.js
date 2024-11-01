@@ -56,8 +56,8 @@ const userSchema = new Schema(
     country: {
       type: String,
     },
-    language: {
-      type: String,
+    languages: {
+      type: Array,
     },
     twitterUrl: {
       type: String,

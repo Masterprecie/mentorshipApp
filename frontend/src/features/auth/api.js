@@ -27,6 +27,58 @@ export const authApi = createApi({
       }),
       invalidatesTags: ["Profile"],
     }),
+
+    addExperience: builder.mutation({
+      query: (credentials) => ({
+        url: `/profile/experience`,
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
+
+    editExperience: builder.mutation({
+      query: (credentials) => ({
+        url: `/profile/experience/${credentials.entryId}`,
+        method: "PUT",
+        body: credentials,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
+
+    deleteExperience: builder.mutation({
+      query: (id) => ({
+        url: `/profile/experience/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Profile"],
+    }),
+
+    addEducation: builder.mutation({
+      query: (credentials) => ({
+        url: `/profile/education`,
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
+
+    editEducation: builder.mutation({
+      query: (credentials) => ({
+        url: `/profile/education/${credentials.entryId}`,
+        method: "PUT",
+        body: credentials,
+      }),
+      invalidatesTags: ["Profile"],
+    }),
+
+    deleteEducation: builder.mutation({
+      query: (id) => ({
+        url: `/profile/education/${id}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Profile"],
+    }),
     getProfile: builder.query({
       query: () => ({
         url: `/profile`,
@@ -67,4 +119,10 @@ export const {
   useVerifyEmailMutation,
   useGetProfileQuery,
   useResendOtpMutation,
+  useAddExperienceMutation,
+  useEditExperienceMutation,
+  useDeleteExperienceMutation,
+  useAddEducationMutation,
+  useEditEducationMutation,
+  useDeleteEducationMutation,
 } = authApi;

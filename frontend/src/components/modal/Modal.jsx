@@ -3,7 +3,8 @@ import { styled } from "@mui/material/styles";
 import Dialog from "@mui/material/Dialog";
 import DialogContent from "@mui/material/DialogContent";
 import IconButton from "@mui/material/IconButton";
-// import CloseIcon from "@mui/icons-material/Close";
+import { MdCancel } from "react-icons/md";
+
 import PropType from "prop-types";
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -16,7 +17,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     maxWidth: "80%",
   },
 }));
-const Modal = ({ children, handleClose, open }) => {
+const Modal = ({ children, handleClose, open, title }) => {
   return (
     <React.Fragment>
       <BootstrapDialog
@@ -24,6 +25,9 @@ const Modal = ({ children, handleClose, open }) => {
         aria-labelledby="customized-dialog-title"
         open={open}
       >
+        <div className="pt-3 text-center font-bold text-2xl text-black">
+          <h1>{title}</h1>
+        </div>
         <IconButton
           aria-label="close"
           onClick={handleClose}
@@ -34,7 +38,7 @@ const Modal = ({ children, handleClose, open }) => {
             color: (theme) => theme.palette.grey[500],
           }}
         >
-          close
+          <MdCancel />
         </IconButton>
         <DialogContent>{children}</DialogContent>
       </BootstrapDialog>
@@ -46,5 +50,6 @@ Modal.propTypes = {
   children: PropType.node,
   handleClose: PropType.func,
   open: PropType.bool,
+  title: PropType.string,
 };
 export default Modal;
