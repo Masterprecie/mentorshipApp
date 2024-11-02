@@ -7,6 +7,7 @@ import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../../features/auth/slice";
+import { loginValidationSchema } from "../../../utils/validations";
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -42,7 +43,9 @@ const Login = () => {
           type: "success",
           message: "Login successfully",
           timer: 2000,
-          cb: () => navigate("/"),
+          cb: () => {
+            res.user.role === "admin" ? navigate("/dashboard/home") : navigate("/");
+          },
         });
       })
       .catch((err) => {
@@ -68,7 +71,7 @@ const Login = () => {
       email: "",
       password: "",
     },
-    //    validationSchema: LoginValidationSchema,
+    validationSchema: loginValidationSchema,
     onSubmit: (values) => loginUser(values),
   });
   return (

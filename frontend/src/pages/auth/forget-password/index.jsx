@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useForgetPasswordMutation } from "../../../features/auth/api";
 import { alert } from "../../../utils/alert";
 import { ClipLoader } from "react-spinners";
+import { forgetPasswordValidationSchema } from "../../../utils/validations";
 
 const ForgetPassword = () => {
   const navigate = useNavigate();
@@ -41,7 +42,7 @@ const ForgetPassword = () => {
       initialValues: {
         email: "",
       },
-      //    validationSchema: LoginValidationSchema,
+      validationSchema: forgetPasswordValidationSchema,
       onSubmit: (values) => handleForgetPassword(values),
     });
   return (

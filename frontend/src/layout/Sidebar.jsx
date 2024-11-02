@@ -22,6 +22,7 @@ import { useAuth } from "../features/auth/hook";
 const drawerWidth = 200;
 
 export default function DashboardSidebar(props) {
+  const [role, setRole] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const logoutUser = () => {
@@ -55,11 +56,20 @@ export default function DashboardSidebar(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
+  useEffect(() => {
+    const userRole = user?.role;
+    if (userRole === "mentee" || userRole === "mentor") {
+      setRole("user");
+    } else {
+      setRole("admin");
+    }
+  }, [user]);
+
 
   const drawer = (
     <div className="z-30">
       <Toolbar>
-        <Link to='/'>
+        <Link to="/">
           <h1 className="font-bold text-3xl">
             Me<span className="text-yellow-400 font-bold text-4xl">2</span>
             Mentor
@@ -69,7 +79,7 @@ export default function DashboardSidebar(props) {
 
       <List>
         {links.map((link, index) => {
-          return <SidebarItems {...{ link }} key={index} />;
+          return <SidebarItems {...{ link }} key={index} role={role} />;
         })}
       </List>
     </div>
@@ -124,7 +134,7 @@ export default function DashboardSidebar(props) {
                     )}
 
                     <span className="capitalize">
-                      {user?.firstName}{" "} {user?.lastName}{" "}
+                      {user?.firstName} {user?.lastName}{" "}
                     </span>
 
                     <IoMdArrowDropdown

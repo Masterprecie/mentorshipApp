@@ -1,15 +1,18 @@
-import { useParams } from "react-router-dom";
-import { useGetMentorByIdQuery } from "../../features/users/api";
-import Tabs from "../dashboard/profile/tabs/Tabs";
-import Reviews from "./tabs/Reviews";
-import Overview from "./tabs/Overview";
-import Avatar from "../../components/avatar";
+import { useLocation } from "react-router-dom";
 import banner from "assets/images/banner.jpg";
 import { TbMessage } from "react-icons/tb";
 import { IoMdHeartEmpty } from "react-icons/io";
+import { useGetMentorByIdQuery } from "../../../../features/users/api";
+import Tabs from "../../profile/tabs/Tabs";
+import Overview from "../../../mentors/tabs/Overview";
+import Reviews from "../../../mentors/tabs/Reviews";
+import Avatar from "../../../../components/avatar";
 
-const MentorDetails = () => {
-  const { id } = useParams();
+const SingleMenteeDetails = () => {
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const id = queryParams.get("id");
   const { data: singleMentor, isLoading, error } = useGetMentorByIdQuery(id);
 
   console.log(singleMentor);
@@ -91,10 +94,10 @@ const MentorDetails = () => {
           </div>
         </div>
       ) : (
-        <p>Mentor not found</p>
+        <p>Mentee not found</p>
       )}
     </div>
   );
 };
 
-export default MentorDetails;
+export default SingleMenteeDetails;

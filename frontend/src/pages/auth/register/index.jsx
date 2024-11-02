@@ -8,6 +8,7 @@ import MentorForm from "./forms/MentorForm";
 import { useFormik } from "formik";
 import { useRegisterMutation } from "../../../features/auth/api";
 import { alert } from "../../../utils/alert";
+import { registerValidationSchema } from "../../../utils/validations";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -46,7 +47,7 @@ const Signup = () => {
         console.log(err);
         alert({
           type: "error",
-          message: err.data.message.message || "An error occurred",
+          message: err?.data?.message || "An error occurred",
           timer: 3000,
         });
       });
@@ -77,7 +78,20 @@ const Signup = () => {
       linkedinUrl: "",
       expertise: "",
     },
-    //    validationSchema: LoginValidationSchema,
+    validationSchema: registerValidationSchema([
+      "firstName",
+      "lastName",
+      "email",
+      "password",
+      "role",
+      "about",
+      "age",
+      "gender",
+      ...(activeTab === 0 ? ["interest"] : []),
+      ...(activeTab === 1
+        ? ["yearsOfExperience", "linkedinUrl", "expertise"]
+        : []),
+    ]),
     onSubmit: (values) => registerUser(values),
   });
 

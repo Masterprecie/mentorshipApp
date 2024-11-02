@@ -245,7 +245,14 @@ const Profile = () => {
                   </span>
                 </div>
               )}
-              <p>{profile?.yearsOfExperience} years of experience</p>
+
+              {
+                profile?.yearsOfExperience && (
+
+                  <p>{profile?.yearsOfExperience} years of experience</p>
+                )
+              }
+
             </div>
           </div>
 

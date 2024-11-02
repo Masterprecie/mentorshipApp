@@ -1,6 +1,7 @@
 import { IoBriefcaseOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
 import propTypes from "prop-types";
+import avatar from "assets/images/avatar.jpg";
 const MentorCard = ({ mentor }) => {
   return (
     <div>
@@ -11,9 +12,9 @@ const MentorCard = ({ mentor }) => {
         <div>
           <Link to={`/mentor/${mentor._id}`}>
             <img
-              src={mentor.profilePictureURL}
+              src={mentor.profilePictureURL || avatar}
               alt="top-mentors"
-              className="rounded-md object-cover w-full"
+              className="rounded-md object-cover h-[300px] w-full"
             />
           </Link>
         </div>
@@ -22,7 +23,7 @@ const MentorCard = ({ mentor }) => {
             {mentor.firstName},{" "}
             <span className="text-sm font-normal">{mentor.lastName}</span>
           </p>
-          {mentor.workExperience?.length > 0 && (
+          {mentor.workExperience?.length > 0 ? (
             <div className="flex items-center mt-2 gap-3">
               <IoBriefcaseOutline />
               {mentor.workExperience?.slice(0, 1).map((exp, idx) => (
@@ -32,6 +33,8 @@ const MentorCard = ({ mentor }) => {
                 </div>
               ))}
             </div>
+          ) : (
+            <p className="text-base text-gray-500 mt-2">--</p>
           )}
         </div>
         <div className="text-black rounded-md p-3 mt-5 bg-gray-300">

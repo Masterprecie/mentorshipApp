@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useGetAllMentorsQuery } from "../../../features/mentors/api";
+import { useGetAllMentorsQuery } from "../../../features/users/api";
 import MentorCard from "../../../components/card/MentorCard";
 
 const Explore = () => {

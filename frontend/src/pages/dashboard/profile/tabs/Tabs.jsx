@@ -35,7 +35,6 @@ const Tabs = ({ tabs }) => {
 };
 
 Tabs.propTypes = {
-  heading: PropTypes.string.isRequired,
   tabs: PropTypes.arrayOf(
     PropTypes.shape({
       label: PropTypes.string.isRequired,

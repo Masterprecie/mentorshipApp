@@ -6,6 +6,7 @@ import { ClipLoader } from "react-spinners";
 import { useChangePasswordMutation } from "../../../../features/auth/api";
 import { alert } from "../../../../utils/alert";
 import { logout } from "../../../../features/auth/slice";
+import { changePasswordValidationSchema } from "../../../../utils/validations";
 
 const PasswordChange = () => {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ const PasswordChange = () => {
         newPassword: "",
         confirmPassword: "",
       },
-      //    validationSchema: LoginValidationSchema,
+      validationSchema: changePasswordValidationSchema,
       onSubmit: (values) => hamdleChangePassword(values),
     });
 

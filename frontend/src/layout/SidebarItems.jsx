@@ -11,7 +11,11 @@ import PropTypes from "prop-types";
 import { memo } from "react";
 import { NavLink } from "react-router-dom";
 
-const SidebarItems = memo(function SidebarItems({ link }) {
+const SidebarItems = memo(function SidebarItems({ link, role }) {
+  console.log("role", role);
+  if (!link.roles.includes(role)) {
+    return null;
+  }
   return (
     <div className="w-[85%] m-auto  ">
       <ListItem
@@ -60,8 +64,9 @@ SidebarItems.propTypes = {
   link: PropTypes.shape({
     url: PropTypes.string,
     name: PropTypes.string.isRequired,
-    icon: PropTypes.string.isRequired,
-    activeIcon: PropTypes.string,
+    icon: PropTypes.node.isRequired,
+    roles: PropTypes.arrayOf(PropTypes.string).isRequired,
   }).isRequired,
+  role: PropTypes.string.isRequired,
 };
 export default SidebarItems;

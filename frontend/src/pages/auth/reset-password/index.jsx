@@ -5,6 +5,7 @@ import { alert } from "../../../utils/alert";
 import { ClipLoader } from "react-spinners";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useState } from "react";
+import { resetPasswordValidationSchema } from "../../../utils/validations";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -57,7 +58,7 @@ const ResetPassword = () => {
         otp: "",
         newPassword: "",
       },
-      //    validationSchema: LoginValidationSchema,
+      validationSchema: resetPasswordValidationSchema,
       onSubmit: (values) => handleResetPassword(values),
     });
 
@@ -67,7 +68,7 @@ const ResetPassword = () => {
         onSubmit={handleSubmit}
         className="mt-[30px] w-full space-y-5 max-w-[559px] mx-auto px-4"
       >
-        <div className="text-center text-2xl font-bold">Forget Password</div>
+        <div className="text-center text-2xl font-bold">Reset Password</div>
         {/* otp */}
         <div>
           <label

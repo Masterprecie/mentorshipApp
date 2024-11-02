@@ -1,4 +1,4 @@
-import { useGetAllMentorsQuery } from "../../features/mentors/api";
+import { useGetAllMentorsQuery } from "../../features/users/api";
 import { useState } from "react";
 import MentorCard from "../../components/card/MentorCard";
 

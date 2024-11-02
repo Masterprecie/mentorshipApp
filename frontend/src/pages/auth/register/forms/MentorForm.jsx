@@ -27,7 +27,7 @@ const MentorForm = ({
     { label: "Art and Creativity", value: "Art and Creativity" },
     { label: "Entrepreneurship", value: "Entrepreneurship" },
     { label: "Healthcare", value: "Healthcare" },
-    { label: "Communication", value: "Art and Creativity" },
+    { label: "Communication", value: "Communication" },
   ];
 
   return (
