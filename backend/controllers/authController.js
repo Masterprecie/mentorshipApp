@@ -220,14 +220,71 @@ const refreshToken = async (req, res, next) => {
   }
 };
 
-const forgotPassword = async (req, res, next) => {};
-const resetPassword = async (req, res, next) => {};
+const forgetPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+    const user = await userModel.findOne({
+      email,
+    });
+
+    if (!user) {
+      return res.status(400).send({
+        message: "User not found",
+      });
+    }
+
+    const otp = generateOTP();
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
+
+    user.otp = otp;
+    user.otpExpires = otpExpires;
+    await user.save();
+
+    await sendEmail(
+      email,
+      "Password Reset",
+      `Dear ${user.firstName}, Your OTP code is: ${otp}. It expires in 10mins.`
+    );
+
+    res.status(200).send({
+      message: "OTP sent successfully, please check your email",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resetPassword = async (req, res, next) => {
+  try {
+    const { otp, newPassword } = req.body;
+    const user = await userModel.findOne({
+      otp,
+    });
+
+    if (!user) {
+      return res.status(400).send({
+        message: "Invalid OTP",
+      });
+    }
+
+    user.password = bcrypt.hashSync(newPassword, 10);
+    user.otp = undefined;
+    user.otpExpires = undefined;
+    await user.save();
+
+    res.status(200).send({
+      message: "Password reset successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 module.exports = {
   register,
   verifyEmail,
   login,
   resendOTP,
   refreshToken,
-  forgotPassword,
+  forgetPassword,
   resetPassword,
 };

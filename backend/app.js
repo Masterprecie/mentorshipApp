@@ -12,6 +12,7 @@ const adminRoutes = require("./routes/adminRoutes");
 const authRoutes = require("./routes/authRoutes");
 const profileRoutes = require("./routes/profileRoutes");
 const sharedRoutes = require("./routes/sharedRoutes");
+const settingsRoutes = require("./routes/settingsRoutes");
 
 const app = express();
 
@@ -30,7 +31,7 @@ app.use("/api/v1/admin", adminRoutes);
 app.use("/api/v1/user", sharedRoutes);
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/profile", profileRoutes);
-// app.use("/api/vi/user", sharedRoutes);
+app.use("/api/v1/settings", settingsRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to Precious me2mentorApp!");

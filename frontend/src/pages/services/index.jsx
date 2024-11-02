@@ -14,7 +14,7 @@ const Services = () => {
               className="md:grid grid-cols-2 gap-5 rounded-md shadow-md p-3 border"
             >
               <div>
-                <img src={img} className="w-full h-full" />
+                <img src={img} className="w-full h-full object-cover" />
               </div>
 
               <div className="text-blue-900">

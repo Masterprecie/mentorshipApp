@@ -22,6 +22,8 @@ import { DashboardLayout } from "./layout";
 import { useEffect } from "react";
 import Bookings from "./pages/dashboard/bookings";
 import Messages from "./pages/dashboard/messages";
+import ForgetPassword from "./pages/auth/forget-password";
+import ResetPassword from "./pages/auth/reset-password";
 
 const App = () => {
   const location = useLocation();
@@ -29,13 +31,15 @@ const App = () => {
   const showNavandFooter =
     location.pathname === "/signup" ||
     location.pathname === "/login" ||
-    location.pathname === "/verify-email" || 
-    location.pathname.includes('dashboard')
+    location.pathname === "/verify-email" ||
+    location.pathname === "/forget-password" ||
+    location.pathname === "/reset-password" ||
+    location.pathname.includes("dashboard")
       ? false
       : true;
 
   useEffect(() => {
-    window.scrollTo(0, 0); // Scroll to the top when the route changes
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -46,6 +50,8 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/forget-password" element={<ForgetPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/available" element={<Available />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/blog" element={<Blog />} />

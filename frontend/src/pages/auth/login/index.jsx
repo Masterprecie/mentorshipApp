@@ -49,7 +49,7 @@ const Login = () => {
         console.log(err);
         alert({
           type: "error",
-          message: err?.message || "An error occurred",
+          message: err?.data?.message || "An error occurred",
           timer: 3000,
         });
       });
@@ -75,7 +75,7 @@ const Login = () => {
     <div className="flex flex-col justify-center items-center min-h-screen">
       <form
         onSubmit={handleSubmit}
-        className="mt-[30px] w-full space-y-5 max-w-[559px] mx-auto"
+        className="mt-[30px] w-full space-y-5 max-w-[559px] mx-auto px-4"
       >
         <div className="text-center text-2xl font-bold">Login</div>
         {/* Email */}
@@ -142,6 +142,9 @@ const Login = () => {
               />
             )}
           </div>
+          <Link to="/forget-password">
+            <p className="text-right font-medium text-xs">Forget Password</p>
+          </Link>
           {touched.password && errors.password && (
             <p className="text-red-500 font-semibold text-sm">
               {errors.password}
@@ -161,14 +164,14 @@ const Login = () => {
             )}
           </button>
         </div>
-         <div className="pt-3 pb-2 text-center">
-            <p className="text-[#475467] text-sm">
-              Don&apos;t have an account?{" "}
-              <span className="text-[#004225] font-semibold text-sm">
-                <Link to="/signup">Sign Up</Link>{" "}
-              </span>
-            </p>
-          </div>
+        <div className="pt-3 pb-2 text-center">
+          <p className="text-[#475467] text-sm">
+            Don&apos;t have an account?{" "}
+            <span className="text-[#004225] font-semibold text-sm">
+              <Link to="/signup">Sign Up</Link>{" "}
+            </span>
+          </p>
+        </div>
       </form>
     </div>
   );

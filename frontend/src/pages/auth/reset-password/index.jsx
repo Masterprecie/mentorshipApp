@@ -1,38 +1,32 @@
 import { useFormik } from "formik";
-import { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-import { useDispatch } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useResetPasswordMutation } from "../../../features/auth/api";
+import { alert } from "../../../utils/alert";
 import { ClipLoader } from "react-spinners";
-import { useChangePasswordMutation } from "../../../../features/auth/api";
-import { alert } from "../../../../utils/alert";
-import { logout } from "../../../../features/auth/slice";
+import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useState } from "react";
 
-const PasswordChange = () => {
-  const dispatch = useDispatch();
+const ResetPassword = () => {
+  const navigate = useNavigate();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [cpasswordVisible, setCPasswordVisible] = useState(false);
-  const [opasswordVisible, setOPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
-  };
-  const toggleOPasswordVisibility = () => {
-    setOPasswordVisible(!opasswordVisible);
   };
 
   const toggleCPasswordVisibility = () => {
     setCPasswordVisible(!cpasswordVisible);
   };
-  const [changePassword, { isLoading }] = useChangePasswordMutation();
+  const [resetPassword, { isLoading }] = useResetPasswordMutation();
 
-  const hamdleChangePassword = (values) => {
+  const handleResetPassword = (values) => {
     const payload = {
-      oldPassword: values.oldPassword,
-      newPassword: values.newPassword,
+      otp: values.otp,
+      password: values.newPassword,
     };
-    console.log(payload);
 
-    changePassword(payload)
+    resetPassword(payload)
       .unwrap()
       .then((res) => {
         console.log(res);
@@ -42,16 +36,16 @@ const PasswordChange = () => {
         }
         alert({
           type: "success",
-          message: "Password Changed successfully",
+          message: "Password Changed Successfully",
           timer: 2000,
-          cb: () => dispatch(logout()),
+          cb: () => navigate("/login"),
         });
       })
       .catch((err) => {
         console.log(err);
         alert({
           type: "error",
-          message: err?.data?.message || "An error occurred",
+          message: err?.message || "An error occurred",
           timer: 3000,
         });
       });
@@ -60,75 +54,49 @@ const PasswordChange = () => {
   const { values, errors, touched, handleChange, handleBlur, handleSubmit } =
     useFormik({
       initialValues: {
-        oldPassword: "",
+        otp: "",
         newPassword: "",
-        confirmPassword: "",
       },
       //    validationSchema: LoginValidationSchema,
-      onSubmit: (values) => hamdleChangePassword(values),
+      onSubmit: (values) => handleResetPassword(values),
     });
 
   return (
-    <div>
+    <div className="flex flex-col justify-center items-center min-h-screen">
       <form
         onSubmit={handleSubmit}
-        className="mt-[30px] w-full space-y-5 max-w-[309px] "
+        className="mt-[30px] w-full space-y-5 max-w-[559px] mx-auto px-4"
       >
-        {/* oldPassword */}
+        <div className="text-center text-2xl font-bold">Forget Password</div>
+        {/* otp */}
         <div>
           <label
-            htmlFor="oldPassword"
+            htmlFor="otp"
             className="text-sm text-[#474747] font-medium block pb-2"
           >
-            Old Password
+            OTP Code
           </label>
-          <div className="relative">
-            <input
-              placeholder="Enter your old password"
-              type={opasswordVisible ? "text" : "password"}
-              value={values.oldPassword}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="oldPassword"
-              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
-            />{" "}
-            {opasswordVisible ? (
-              <AiOutlineEye
-                onClick={toggleOPasswordVisibility}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "10px",
-                  transform: "translateY(-50%)",
-                  cursor: "pointer",
-                }}
-              />
-            ) : (
-              <AiOutlineEyeInvisible
-                onClick={toggleOPasswordVisibility}
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  right: "10px",
-                  transform: "translateY(-50%)",
-                  cursor: "pointer",
-                }}
-              />
-            )}
-          </div>
-          {touched.oldPassword && errors.oldPassword && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.oldPassword}
-            </p>
+          <input
+            type="number"
+            placeholder="Enter the otp code sent to your email"
+            value={values.otp}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="otp"
+            className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
+          />
+          {touched.otp && errors.otp && (
+            <p className="text-red-500 font-semibold text-sm">{errors.otp}</p>
           )}
         </div>
-        {/* newPassword */}
+
+        {/* Password */}
         <div>
           <label
-            htmlFor="newPassword"
+            htmlFor="password"
             className="text-sm text-[#474747] font-medium block pb-2"
           >
-            Password
+            New Password
           </label>
           <div className="relative">
             <input
@@ -218,7 +186,6 @@ const PasswordChange = () => {
             </p>
           )}
         </div>
-
         <div className="pt-5 col-span-2">
           <button
             type="submit"
@@ -227,13 +194,22 @@ const PasswordChange = () => {
             {isLoading ? (
               <ClipLoader color="#ffffff" loading={true} size={15} />
             ) : (
-              "Reset"
+              "Submit"
             )}
           </button>
+        </div>
+        <div className="w-[200px] mx-auto">
+          <Link to="/login">
+            <button
+              type="button"
+              className="py-3 px-4 text-black border  w-full font-bold rounded-[8px] text-base"
+            >
+              Back to Login
+            </button>
+          </Link>
         </div>
       </form>
     </div>
   );
 };
-
-export default PasswordChange;
+export default ResetPassword;

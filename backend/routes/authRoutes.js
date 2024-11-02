@@ -5,6 +5,8 @@ const {
   verifyEmail,
   resendOTP,
   refreshToken,
+  resetPassword,
+  forgetPassword,
 } = require("../controllers/authController");
 const authRoutes = express.Router();
 
@@ -196,5 +198,60 @@ authRoutes.post("/resend-otp/", resendOTP);
  *         description: Internal server error
  */
 authRoutes.post("/refresh", refreshToken);
+
+/**
+ * @swagger
+ * /api/v1/auth/forget-password:
+ *   post:
+ *     summary: Forget Password
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *             properties:
+ *               email:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: OTP Sent, Check your email
+ *       500:
+ *         description: Internal server error
+ */
+authRoutes.post("/forget-password", forgetPassword);
+
+/**
+ * @swagger
+ * /api/v1/auth/reset-password:
+ *   post:
+ *     summary: Reset Password
+ *     tags: [Auth]
+ *     security: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - otp
+ *               - newPassword
+ *             properties:
+ *               otp:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Password Changed successful
+ *       500:
+ *         description: Internal server error
+ */
+authRoutes.post("/reset-password", resetPassword);
 
 module.exports = authRoutes;

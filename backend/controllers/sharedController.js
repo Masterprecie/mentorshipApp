@@ -20,6 +20,7 @@ const getAllMentors = async (req, res, next) => {
         { country: { $regex: search, $options: "i" } },
         { age: { $regex: search, $options: "i" } },
         { expertise: { $regex: search, $options: "i" } },
+        { yearsOfExperience: { $regex: search, $options: "i" } },
       ];
     }
 

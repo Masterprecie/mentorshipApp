@@ -94,6 +94,20 @@ export const authApi = createApi({
         body: credentials,
       }),
     }),
+    resetPassword: builder.mutation({
+      query: (credentials) => ({
+        url: `/auth/reset-password`,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    changePassword: builder.mutation({
+      query: (credentials) => ({
+        url: `/settings/change-password`,
+        method: "POST",
+        body: credentials,
+      }),
+    }),
     verifyEmail: builder.mutation({
       query: (credentials) => ({
         url: `/auth/verify-email`,
@@ -125,4 +139,6 @@ export const {
   useAddEducationMutation,
   useEditEducationMutation,
   useDeleteEducationMutation,
+  useResetPasswordMutation,
+  useChangePasswordMutation,
 } = authApi;

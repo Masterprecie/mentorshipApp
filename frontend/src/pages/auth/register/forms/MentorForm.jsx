@@ -34,7 +34,7 @@ const MentorForm = ({
     <div>
       <form
         onSubmit={handleSubmit}
-        className="mt-[30px] grid grid-cols-2  gap-5 max-w-[559px] mx-auto"
+        className="mt-[30px] lg:grid grid-cols-2 space-y-5 lg:space-y-0  gap-5 max-w-[559px] mx-auto"
       >
         {/* First Name */}
         <div>
