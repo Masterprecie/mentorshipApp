@@ -7,8 +7,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import PropTypes from "prop-types";
-// import { formatDate } from "../../../utils/helpers";
-// import Loader from "../../../components/Loader";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { IconButton, Menu, MenuItem } from "@mui/material";
@@ -25,7 +23,7 @@ export default function TableComponent({
   columns,
   data,
   onSearch,
-  error,
+  // error,
 }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);

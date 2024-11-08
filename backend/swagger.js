@@ -38,9 +38,9 @@ const swaggerSpec = swaggerJSDoc(options);
 const setupSwaggerDocs = (app) => {
   // Route to serve the Swagger docs
   app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-  // console.log(
-  //   "Swagger docs available at https://me2mentor.onrender.com/api-docs"
-  // );
+  console.log(
+    "Swagger docs available at https://mentorshipapp-8uoy.onrender.com/api-docs"
+  );
 };
 
 module.exports = setupSwaggerDocs;
