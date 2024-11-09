@@ -42,9 +42,11 @@ const Login = () => {
         alert({
           type: "success",
           message: "Login successfully",
-          timer: 2000,
+          timer: 1000,
           cb: () => {
-            res.user.role === "admin" ? navigate("/dashboard/home") : navigate("/");
+            res.user.role === "admin"
+              ? navigate("/dashboard/home")
+              : navigate("/");
           },
         });
       })

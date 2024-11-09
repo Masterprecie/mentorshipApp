@@ -38,7 +38,7 @@ const Signup = () => {
         alert({
           type: "success",
           message: "Registration successfully",
-          timer: 3000,
+          timer: 2000,
           cb: () =>
             navigate(`/verify-email?email=${encodeURIComponent(values.email)}`),
         });

@@ -46,10 +46,6 @@ const userSchema = new Schema(
       type: Boolean,
       default: false,
     },
-    isSuspended: {
-      type: Boolean,
-      default: false,
-    },
     interest: {
       type: Array,
     },
@@ -79,6 +75,9 @@ const userSchema = new Schema(
     },
     yearsOfExperience: {
       type: String,
+    },
+    mentorIdcard: {
+      type: Array,
     },
     education: [
       {
@@ -124,18 +123,9 @@ const userSchema = new Schema(
     about: {
       type: String,
     },
-    otp: {
+    accountStatus: {
       type: String,
-    },
-    otpExpires: {
-      type: Date,
-    },
-    otpPurpose: {
-      type: String,
-    },
-    refreshToken: {
-      type: String,
-      require: true,
+      enum: ["pending", "completed", "suspended"],
     },
   },
   { timestamps: true }

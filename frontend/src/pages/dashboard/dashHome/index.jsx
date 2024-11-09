@@ -6,21 +6,30 @@ import { useAuth } from "../../../features/auth/hook";
 import { useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import { Link } from "react-router-dom";
+import { useGetProfileQuery } from "../../../features/auth/api";
 
 const DashHome = () => {
   const { user } = useAuth();
   const [open, setOpen] = useState(true);
   const [date, setDate] = useState(new Date());
+  const { data: userProfile } = useGetProfileQuery();
+  const profile = userProfile?.user;
+
+  console.log(profile);
 
   const toggleCancel = () => {
     setOpen(false);
   };
 
   return (
-    <div className="mt-32 px-10 grid grid-cols-12 gap-16">
+    <div className="mt-32 px-10 md:grid grid-cols-12 gap-16">
       <div className="col-span-8">
         <h1 className="font-bold text-3xl">Welcome 👋</h1>
         <p>You have no upcoming sessions</p>
+        <div className="text-yellow-200 text-sm mt-3 border border-yellow-700 bg-yellow-600 p-2 rounded-md">
+          Account Pending
+        </div>
 
         {open && (
           <div className="relative mt-10 bg-gray-200 rounded-lg px-3 py-5 flex justify-between">
@@ -37,10 +46,21 @@ const DashHome = () => {
                   Verify email
                 </p>
               </div>
-              <div className="flex gap-3 items-center">
-                <CgRadioCheck size={20} />
-                <p>Book your first session — Learn/network with mentors.</p>
-              </div>
+              {user?.role === "mentor" ? (
+                <div className="flex gap-3 items-center">
+                  <CgRadioCheck size={20} />
+                  <Link to="/dashboard/settings" className="hover:underline">
+                    <p>Upload a verified ID Card</p>
+                  </Link>
+                </div>
+              ) : (
+                <div className="flex gap-3 items-center">
+                  <CgRadioCheck size={20} />
+                  <Link to="/dashboard/explore" className="hover:underline">
+                    <p>Book your first session — Learn/network with mentors.</p>
+                  </Link>
+                </div>
+              )}
             </div>
             <IconButton
               aria-label="close"

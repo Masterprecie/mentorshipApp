@@ -3,10 +3,11 @@ import { useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { useDispatch } from "react-redux";
 import { ClipLoader } from "react-spinners";
-import { useChangePasswordMutation } from "../../../../features/auth/api";
-import { alert } from "../../../../utils/alert";
-import { logout } from "../../../../features/auth/slice";
-import { changePasswordValidationSchema } from "../../../../utils/validations";
+import { useChangePasswordMutation } from "../../../features/auth/api";
+import { alert } from "../../../utils/alert";
+import { logout } from "../../../features/auth/slice";
+import { changePasswordValidationSchema } from "../../../utils/validations";
+import { Link } from "react-router-dom";
 
 const PasswordChange = () => {
   const dispatch = useDispatch();
@@ -70,7 +71,11 @@ const PasswordChange = () => {
     });
 
   return (
-    <div>
+    <div className="mt-28 pb-5 px-10">
+      <p className="text-sm">
+        <Link to="/dashboard/settings">Settings</Link> <span> {">"} </span>{" "}
+        Change Password
+      </p>
       <form
         onSubmit={handleSubmit}
         className="mt-[30px] w-full space-y-5 max-w-[309px] "

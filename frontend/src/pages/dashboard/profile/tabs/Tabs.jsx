@@ -15,7 +15,7 @@ const Tabs = ({ tabs }) => {
           {tabs.map((tab, index) => (
             <button
               key={index}
-              className={`pb-3 inline-block text-sm font-medium ${
+              className={`pb-3 outline-0 inline-block text-sm font-medium ${
                 activeTab === index
                   ? "border-b-2 border-[#004225] text-[#004225] font-semibold"
                   : "text-[#9E9E9E]"

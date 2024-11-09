@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 .css-cokf1l-MuiListItemIcon-root {
-  min-width: 33px !important;
+  min-width: 30px !important;
 }
 
 body {

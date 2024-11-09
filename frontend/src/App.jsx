@@ -24,6 +24,7 @@ import ForgetPassword from "./pages/auth/forget-password";
 import ResetPassword from "./pages/auth/reset-password";
 import AllUsers from "./pages/dashboard/allUsers";
 import SingleMentorDetails from "./pages/dashboard/allUsers/mentors/SingleMentorDetails";
+import PasswordChange from "./pages/dashboard/settings/PasswordChange";
 
 const App = () => {
   const location = useLocation();
@@ -64,6 +65,7 @@ const App = () => {
           <Route path="home" element={<DashHome />} />
           <Route path="explore" element={<Explore />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="settings/change-password" element={<PasswordChange />} />
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<Messages />} />
           <Route path="bookings" element={<Bookings />} />

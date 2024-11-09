@@ -1,14 +1,23 @@
 import Tabs from "../profile/tabs/Tabs";
-import PasswordChange from "./tabs/PasswordChange";
+import Notifications from "./tabs/Notifications";
 import Security from "./tabs/Security";
+import Verification from "./tabs/Verification";
 
 const Settings = () => {
   const tabs = [
     {
-      label: "Change Password",
+      label: "Verification",
       content: (
         <div>
-          <PasswordChange />
+          <Verification />
+        </div>
+      ),
+    },
+    {
+      label: "Notifications",
+      content: (
+        <div>
+          <Notifications />
         </div>
       ),
     },
