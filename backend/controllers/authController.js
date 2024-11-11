@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const sendEmail = require("../utils/emailUtils");
 const { generateOTP } = require("../utils/helpers");
+const generateWelcomeEmail = require("../utils/welcomeMessage");
+const tokenModel = require("../models/tokenModel");
 
 const register = async (req, res, next) => {
   try {
@@ -34,7 +36,7 @@ const register = async (req, res, next) => {
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
-    await userModel.create({
+    const newUser = await userModel.create({
       firstName,
       lastName,
       email,
@@ -48,16 +50,17 @@ const register = async (req, res, next) => {
       about,
       linkedinUrl,
       expertise,
+    });
+
+    await tokenModel.create({
+      user: newUser._id,
       otp,
       otpExpires,
       otpPurpose: "verify-email",
     });
 
-    await sendEmail(
-      email,
-      "Email Verification",
-      `Dear ${firstName}, Your OTP code is: ${otp}. It expires in 10mins.`
-    );
+    const emailBody = generateWelcomeEmail(firstName, otp);
+    await sendEmail(email, "Welcome to Me2Mentor", emailBody);
 
     res.status(201).send({
       isEmailVerified: false,
@@ -72,29 +75,32 @@ const verifyEmail = async (req, res, next) => {
   try {
     const { email, otp } = req.body;
 
-    const doesUserExist = await userModel.exists({
+    const user = await userModel.findOne({
+      email,
+    });
+
+    if (!user) {
+      return res.status(400).send({
+        message: "User not found",
+      });
+    }
+
+    const token = await tokenModel.findOne({
+      user: user._id,
       otp,
       otpPurpose: "verify-email",
     });
 
-    if (!doesUserExist) {
-      return res.status(400).send({
-        message: "Invalid OTP",
-      });
-    }
-
-    const user = await userModel.findOne({ email });
-
-    if (user.otp !== otp || user.otpExpires < Date.now()) {
+    if (!token || token.otpExpires < Date.now()) {
       return res.status(400).send({
         message: "Invalid or expired OTP",
       });
     }
 
     user.isEmailVerified = true;
-    user.otp = undefined;
-    user.otpExpires = undefined;
     await user.save();
+
+    await tokenModel.deleteOne({ _id: token._id });
 
     res.status(200).send({
       message: "Email verified successfully",
@@ -111,6 +117,12 @@ const login = async (req, res, next) => {
     if (!user) {
       return res.status(400).send({
         message: "User not found",
+      });
+    }
+    if (!user.isEmailVerified) {
+      return res.status(400).send({
+        message:
+          "Email not verified. Please verify your email before logging in.",
       });
     }
 
@@ -138,8 +150,10 @@ const login = async (req, res, next) => {
       }
     );
 
-    user.refreshToken = refreshToken;
-    await user.save();
+    await tokenModel.create({
+      user: user._id,
+      refreshToken,
+    });
 
     res.status(200).send({
       message: "Login successful",
@@ -195,13 +209,15 @@ const resendOTP = async (req, res, next) => {
 const refreshToken = async (req, res, next) => {
   try {
     const { refreshToken } = req.body;
-    const user = await userModel.findOne({ refreshToken });
+    const userToken = await tokenModel.findOne({ refreshToken });
 
-    if (!user) {
+    if (!userToken) {
       return res.status(400).send({
         message: "Invalid refresh token",
       });
     }
+
+    const user = await userModel.findById(userToken.user);
 
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },
