@@ -25,6 +25,10 @@ import ResetPassword from "./pages/auth/reset-password";
 import AllUsers from "./pages/dashboard/allUsers";
 import SingleMentorDetails from "./pages/dashboard/allUsers/mentors/SingleMentorDetails";
 import PasswordChange from "./pages/dashboard/settings/PasswordChange";
+import AllRequests from "./pages/dashboard/allRequests";
+import AllSupports from "./pages/dashboard/allSupports";
+import Notifications from "./pages/dashboard/notifications";
+import EmailChange from "./pages/dashboard/settings/EmailChange";
 
 const App = () => {
   const location = useLocation();
@@ -41,7 +45,7 @@ const App = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [location]);
 
   return (
     <div>
@@ -66,11 +70,15 @@ const App = () => {
           <Route path="explore" element={<Explore />} />
           <Route path="settings" element={<Settings />} />
           <Route path="settings/change-password" element={<PasswordChange />} />
+          <Route path="settings/change-email" element={<EmailChange />} />
           <Route path="profile" element={<Profile />} />
           <Route path="messages" element={<Messages />} />
           <Route path="bookings" element={<Bookings />} />
           <Route path="users" element={<AllUsers />} />
           <Route path="users/mentor" element={<SingleMentorDetails />} />
+          <Route path="requests" element={<AllRequests />} />
+          <Route path="supports" element={<AllSupports />} />
+          <Route path="notifications" element={<Notifications />} />
           {/* <Route path="users/mentee" element={<SingleMenteeDetails />} /> */}
         </Route>
       </Routes>

@@ -45,9 +45,9 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="lg:flex flex-col items-center">
+          <div className="lg:flex flex-col items-center pt-3 md:pt-0">
             <div className="lg:relative">
-              <p className="text-3xl font-bold inline-block uppercase pb-1">
+              <p className="text-2xl font-semibold inline-block uppercase pb-1">
                 Links
               </p>
               <div className="lg:absolute bottom-0 left-0 lg:w-1/2 md:w-[50px]  w-1/5 border-b-4 border-yellow-400 "></div>
@@ -70,7 +70,7 @@ const Footer = () => {
 
           <div className="lg:flex flex-col items-center pt-5 lg:pt-0">
             <div className="lg:relative">
-              <p className="text-3xl font-bold inline-block uppercase pb-1">
+              <p className="text-2xl font-semibold inline-block uppercase pb-1">
                 Supports
               </p>
               <div className="lg:absolute bottom-0 left-0 lg:w-1/2 md:w-1/5 w-1/4 border-b-4 border-yellow-400"></div>
@@ -92,7 +92,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        <div className="mt-10 flex justify-between text-xs items-center">
+        <div className="mt-10 flex flex-col gap-3 md:flex-row justify-between text-xs items-center">
           <div className="flex gap-2">
             2024 &copy; Revamped by
             <a

@@ -178,7 +178,7 @@ export default function TableComponent({
                           open={Boolean(anchorEl)}
                           onClose={handleMenuClose}
                         >
-                          <MenuItem onClick={handleEdit}>Edit</MenuItem>
+                          <MenuItem onClick={handleEdit}>View</MenuItem>
                           <MenuItem onClick={handleDelete}>Delete</MenuItem>
                         </Menu>
                       </TableCell>

@@ -5,6 +5,9 @@ import { TiMessages } from "react-icons/ti";
 import { CgProfile } from "react-icons/cg";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa";
+import { FaQuestionCircle } from "react-icons/fa";
+import { BiSupport } from "react-icons/bi";
+import { IoNotificationsCircleOutline } from "react-icons/io5";
 
 export const links = [
   {
@@ -46,9 +49,27 @@ export const links = [
     roles: ["admin", "user"],
   },
   {
+    name: "Requests",
+    url: "/dashboard/requests",
+    icon: <FaQuestionCircle />,
+    roles: ["admin"],
+  },
+  {
+    name: "Notifications",
+    url: "/dashboard/notifications",
+    icon: <IoNotificationsCircleOutline />,
+    roles: ["admin", "user"],
+  },
+  {
     name: "Settings",
     url: "/dashboard/settings",
     icon: <IoSettingsOutline />,
     roles: ["admin", "user"],
+  },
+  {
+    name: "Supports",
+    url: "/dashboard/supports",
+    icon: <BiSupport />,
+    roles: ["admin"],
   },
 ];

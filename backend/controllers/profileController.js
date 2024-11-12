@@ -55,7 +55,14 @@ const updateProfile = async (req, res, next) => {
       });
     }
 
-    const { password, email, ...updateData } = req.body;
+    const { password, email, mentorIdcard, ...updateData } = req.body;
+
+    // Check if mentorIdcard is being updated
+    if (mentorIdcard) {
+      updateData.mentorIdcard = mentorIdcard;
+      updateData.idCardStatus = "pending";
+      updateData.declinedIdReason = null;
+    }
 
     const updatedUser = await userModel.findByIdAndUpdate(
       decoded.id,
@@ -65,15 +72,7 @@ const updateProfile = async (req, res, next) => {
       { new: true, runValidators: true }
     );
 
-    const {
-      password: pwd,
-      otp,
-      otpExpires,
-      otpPurpose,
-      refreshToken,
-      __v,
-      ...userProfile
-    } = updatedUser.toObject();
+    const { password: pwd, __v, ...userProfile } = updatedUser.toObject();
 
     res.status(200).send({
       user: userProfile,

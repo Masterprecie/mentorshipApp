@@ -123,13 +123,18 @@ const userSchema = new Schema(
     about: {
       type: String,
     },
-    accountStatus: {
+    idCardStatus: {
       type: String,
-      enum: ["pending", "completed", "suspended"],
+      enum: ["pending", "verified", "declined"],
+      default: "pending",
+    },
+    declinedIdReason: {
+      type: String,
     },
   },
   { timestamps: true }
 );
+
 userSchema.plugin(mongoosePaginate);
 
 const userModel = model("user", userSchema);

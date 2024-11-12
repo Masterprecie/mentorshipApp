@@ -1,6 +1,6 @@
 import { useState } from "react";
 import TableComponent from "../components/TableComponent";
-import { useGetAllMenteesQuery } from "../../../../features/users/api";
+import { useGetAllMenteesQuery } from "../../../../features/admin/api";
 
 const columns = [
   // { id: "_id", label: "", minWidth: 50 },

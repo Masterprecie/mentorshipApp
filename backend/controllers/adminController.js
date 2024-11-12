@@ -1,3 +1,4 @@
+const emailChangeModel = require("../models/emailChangeModel");
 const userModel = require("../models/userModel");
 
 const getAllMentees = async (req, res, next) => {
@@ -55,7 +56,82 @@ const getAMentee = async (req, res, next) => {
   }
 };
 
+const verifyMentorId = async (req, res, next) => {
+  try {
+    const { mentorId } = req.body;
+
+    const mentor = await userModel.findOne({ _id: mentorId });
+
+    if (!mentor) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+
+    mentor.idCardStatus = "verified";
+    await mentor.save();
+
+    res.status(200).json({
+      message: "Mentor verified successfully",
+      mentor,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const declineMentorId = async (req, res, next) => {
+  try {
+    const { mentorId, reason } = req.body;
+
+    const mentor = await userModel.findOne({ _id: mentorId });
+
+    if (!mentor) {
+      return res.status(404).send({
+        message: "User not found",
+      });
+    }
+
+    mentor.idCardStatus = "declined";
+    mentor.declinedIdReason = reason;
+    await mentor.save();
+
+    res.status(200).json({
+      message: "ID Card Declined successfully",
+      mentor,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const getAllEmailRequest = async (req, res, next) => {
+  try {
+    const { page, limit } = req.query;
+
+    const options = {
+      page,
+      limit,
+    };
+
+    const emailRequest = await emailChangeModel.paginate({}, options);
+
+    if (emailRequest.docs.length === 0) {
+      return res.status(404).send({
+        message: "No email request found",
+      });
+    }
+
+    res.status(200).json(emailRequest);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllMentees,
   getAMentee,
+  verifyMentorId,
+  declineMentorId,
+  getAllEmailRequest,
 };

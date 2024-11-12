@@ -27,25 +27,18 @@ export const usersApi = createApi({
       }),
     }),
 
-    getAllMentees: builder.query({
-      query: ({ page, limit, search }) => {
-        const pageParams = page ? `page=${page}` : "";
-        const limitParams = limit ? `limit=${limit}` : "";
-        const searchParams = search ? `search=${search}` : "";
-        const combinedParams = [pageParams, limitParams, searchParams]
-          .filter(Boolean)
-          .join("&");
-        return {
-          url: `/admin/mentees?${combinedParams}`,
-          method: "GET",
-        };
-      },
+    contact: builder.mutation({
+      query: (payload) => ({
+        url: `/user/contact`,
+        method: "POST",
+        body: payload,
+      }),
     }),
-
-    getMenteeById: builder.query({
-      query: (id) => ({
-        url: `/admin/mentee/${id}`,
-        method: "GET",
+    changeEmailRequest: builder.mutation({
+      query: (payload) => ({
+        url: `/settings/change-email-request`,
+        method: "POST",
+        body: payload,
       }),
     }),
   }),
@@ -54,6 +47,6 @@ export const usersApi = createApi({
 export const {
   useGetAllMentorsQuery,
   useGetMentorByIdQuery,
-  useGetAllMenteesQuery,
-  useGetMenteeByIdQuery,
+  useContactMutation,
+  useChangeEmailRequestMutation,
 } = usersApi;

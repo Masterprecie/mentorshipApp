@@ -4,16 +4,26 @@ import { TbMessage } from "react-icons/tb";
 import { IoMdHeartEmpty } from "react-icons/io";
 import { useGetMentorByIdQuery } from "../../../../features/users/api";
 import Tabs from "../../profile/tabs/Tabs";
-import Overview from "../../../mentors/tabs/Overview";
-import Reviews from "../../../mentors/tabs/Reviews";
 import Avatar from "../../../../components/avatar";
+import Overview from "./tabs/Overview";
+import Reviews from "./tabs/Reviews";
+import { useEffect } from "react";
 
 const SingleMentorDetails = () => {
   const location = useLocation();
 
   const queryParams = new URLSearchParams(location.search);
   const id = queryParams.get("id");
-  const { data: singleMentor, isLoading, error } = useGetMentorByIdQuery(id);
+  const {
+    data: singleMentor,
+    isLoading,
+    error,
+    refetch,
+  } = useGetMentorByIdQuery(id);
+
+  useEffect(() => {
+    refetch();
+  }, [singleMentor]);
 
   console.log(singleMentor);
   const tabs = [
@@ -21,7 +31,7 @@ const SingleMentorDetails = () => {
       label: "Overview",
       content: (
         <div>
-          <Overview mentorProfile={singleMentor} />
+          <Overview mentorProfile={singleMentor} refetch={refetch} />
         </div>
       ),
     },
@@ -46,9 +56,15 @@ const SingleMentorDetails = () => {
           <div className="relative">
             <img
               src={banner}
-              alt=""
+              alt="img"
               className="w-full h-[250px] object-cover"
             />
+            <button
+              onClick={() => window.history.back()}
+              className="bg-black text-white absolute top-20 left-3 rounded-md p-2 text-sm font-medium"
+            >
+              Back
+            </button>
           </div>
           <div className="w-[90%] mx-auto ">
             <div className="mt-[-30px] flex justify-between items-center">

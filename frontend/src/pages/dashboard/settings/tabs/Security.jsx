@@ -11,6 +11,7 @@ const Security = () => {
   };
   return (
     <div className="w-full md:w-1/2 space-y-8">
+      {/* enable 2FA */}
       <div className="border rounded-2xl p-5 space-y-3 flex justify-between">
         <div>
           <h1 className="text-lg text-black font-semibold">
@@ -25,6 +26,7 @@ const Security = () => {
           <ToggleSwitch checked={isActive} onChange={handleToggle} />
         </div>
       </div>
+      {/* change password */}
       <div
         onClick={() => navigate("/dashboard/settings/change-password")}
         className="border rounded-2xl p-5 space-y-3 flex justify-between"
@@ -33,6 +35,21 @@ const Security = () => {
           <h1 className="text-lg text-black font-semibold">Change Password</h1>
           <p className="text-sm text-gray-400">
             Click here to change your account&apos;s password
+          </p>
+        </div>
+        <div>
+          <MdOutlineKeyboardArrowRight />
+        </div>
+      </div>
+      {/* change email */}
+      <div
+        onClick={() => navigate("/dashboard/settings/change-email")}
+        className="border rounded-2xl p-5 space-y-3 flex justify-between"
+      >
+        <div>
+          <h1 className="text-lg text-black font-semibold">Change Email</h1>
+          <p className="text-sm text-gray-400">
+            Click here to change your account&apos;s email
           </p>
         </div>
         <div>

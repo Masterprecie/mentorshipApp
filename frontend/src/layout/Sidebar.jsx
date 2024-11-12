@@ -65,13 +65,12 @@ export default function DashboardSidebar(props) {
     }
   }, [user]);
 
-
   const drawer = (
     <div className="z-30">
       <Toolbar>
         <Link to="/">
-          <h1 className="font-bold text-3xl">
-            Me<span className="text-yellow-400 font-bold text-4xl">2</span>
+          <h1 className="font-semibold text-2xl">
+            Me<span className="text-yellow-400 font-semibold text-3xl">2</span>
             Mentor
           </h1>
         </Link>
@@ -115,9 +114,6 @@ export default function DashboardSidebar(props) {
           <div className=" w-full">
             <div>
               <div className="flex items-center gap-5 justify-end">
-                {/* <button className="border border-[#004225] rounded-[45px] py-[8px] px-[24px]">
-                  Start Selling
-                </button> */}
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={toggleDropdown}

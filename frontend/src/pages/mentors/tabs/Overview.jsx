@@ -8,6 +8,7 @@ import { formatDate } from "../../../utils/helpers";
 import Education from "assets/svg/education.svg?react";
 import Experience from "assets/svg/experience.svg?react";
 import { useState } from "react";
+
 const Overview = ({ mentorProfile }) => {
   const [showAllExperience, setShowAllExperience] = useState(false);
   const [showAllEducation, setShowAllEducation] = useState(false);
@@ -19,7 +20,7 @@ const Overview = ({ mentorProfile }) => {
 
   const aboutLimit = 150;
   return (
-    <div className="grid grid-cols-12 pb-5">
+    <div className="grid grid-cols-12 gap-10 pb-5">
       <div className="col-span-6">
         <div>
           <p className="text-sm font-medium text-black">
@@ -200,6 +201,7 @@ const Overview = ({ mentorProfile }) => {
         </div>
         {/* </div> */}
       </div>
+      <div className="col-span-5 "></div>
     </div>
   );
 };

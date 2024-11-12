@@ -1,54 +1,58 @@
-import { useState } from "react";
-import axios from "axios";
+import { useFormik } from "formik";
+import { contactValidationSchema } from "../../../utils/validations";
+import { ClipLoader } from "react-spinners";
+import { alert } from "../../../utils/alert";
+import { useContactMutation } from "../../../features/users/api";
 
 const ContactUS = () => {
-  const [formData, setFormData] = useState({
-    full_name: "",
-    email: "",
-    phone_number: "",
-    message: "",
-  });
+  const [contact, { isLoading }] = useContactMutation();
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleSubmitContact = (values) => {
+    console.log(values);
 
-    const parsedValue = name === "phone_number" ? parseInt(value, 10) : value;
-
-    setFormData({
-      ...formData,
-      [name]: parsedValue,
-    });
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post(
-        "http://localhost:5000/api/main/contactus",
-        formData
-      );
-
-      if (response.status === 200) {
-        const data = response.data;
-        console.log("Response", data);
-        alert("Form submitted successfully!");
-        setFormData({
-          full_name: "",
-          email: "",
-          phone_number: "",
-          message: "",
+    contact(values)
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res?.error) {
+          console.log(res?.message);
+          return;
+        }
+        resetForm();
+        alert({
+          type: "success",
+          message: "Message Sent successfully",
+          timer: 2000,
         });
-      } else {
-        // Handle other response statuses or errors
-        console.log("Form submission failed.");
-      }
-    } catch (error) {
-      // Handle any Axios errors
-      console.error("Form submission error:", error);
-    }
+      })
+      .catch((err) => {
+        console.log(err);
+        alert({
+          type: "error",
+          message: err?.data?.message || "An error occurred",
+          timer: 3000,
+        });
+      });
   };
 
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    resetForm,
+  } = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      phoneNumber: "",
+      message: "",
+    },
+    validationSchema: contactValidationSchema,
+    onSubmit: (values) => handleSubmitContact(values),
+  });
   return (
     <div className="bg-contact bg-cover relative text-white py-16 px-5">
       <div className="absolute inset-0 bg-blue-900 opacity-80 z-20"></div>
@@ -62,60 +66,86 @@ const ContactUS = () => {
             allowFullScreen=""
             loading="lazy"
             referrerPolicy="no-referrer-when-downgrade"
-            className="rounded-md w-full md:w-[350px] lg:w-[600px] h-[450px]"
+            className="rounded-md w-full md:w-[350px] lg:w-[600px] h-[580px]"
           ></iframe>
         </div>
         <div className="w-full pt-5 md:pt-0">
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            {/* full name */}
             <div>
-              <label htmlFor="name" className="block text-base font-semibold">
+              <label
+                htmlFor="fullName"
+                className="text-sm  font-medium block pb-2"
+              >
                 Full Name
               </label>
               <input
                 type="text"
+                name="fullName"
                 placeholder="Full Name"
-                className="text-black border outline-0 p-2 rounded-md w-full  bg-[#f5f8fa]"
-                name="full_name"
-                value={formData.full_name}
+                value={values.fullName}
                 onChange={handleChange}
-                required
+                onBlur={handleBlur}
+                className=" text-black  border border-[#D0D5DD]  rounded-[8px] outline-0 w-full py-3 px-4"
               />
+              {touched.fullName && errors.fullName && (
+                <p className="text-red-500 font-semibold text-sm">
+                  {errors.fullName}
+                </p>
+              )}
             </div>
+            {/* email */}
             <div>
-              <label htmlFor="email" className="block text-base font-semibold">
+              <label
+                htmlFor="email"
+                className="text-sm  font-medium block pb-2"
+              >
                 Email
               </label>
               <input
                 type="email"
-                placeholder="Email"
-                className="text-black border outline-0 p-2 rounded-md w-full  bg-[#f5f8fa]"
                 name="email"
-                value={formData.email}
+                placeholder="Email"
+                value={values.email}
                 onChange={handleChange}
-                required
+                onBlur={handleBlur}
+                className=" text-black  border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
               />
+              {touched.email && errors.email && (
+                <p className="text-red-500 font-semibold text-sm">
+                  {errors.email}
+                </p>
+              )}
             </div>
+
+            {/* phone number */}
             <div>
               <label
-                htmlFor="number"
-                className=" block text-base font-semibold"
+                htmlFor="phoneNumber"
+                className="text-sm  font-medium block pb-2"
               >
                 Phone Number
               </label>
               <input
                 type="number"
+                name="phoneNumber"
                 placeholder="Phone Number"
-                className="text-black border outline-0 p-2 rounded-md w-full  bg-[#f5f8fa]"
-                name="phone_number"
-                value={formData.phone_number}
+                value={values.phoneNumber}
                 onChange={handleChange}
-                required
+                onBlur={handleBlur}
+                className=" text-black  border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
               />
+              {touched.phoneNumber && errors.phoneNumber && (
+                <p className="text-red-500 font-semibold text-sm">
+                  {errors.phoneNumber}
+                </p>
+              )}
             </div>
+
             <div className="">
               <label
                 htmlFor="message"
-                className="block text-base font-semibold"
+                className="text-sm  font-medium block pb-2"
               >
                 Message
               </label>
@@ -124,18 +154,27 @@ const ContactUS = () => {
                 cols="10"
                 rows="7"
                 placeholder="Message"
-                className="text-black border outline-0 p-2 rounded-md w-full  bg-[#f5f8fa]"
-                value={formData.message}
+                value={values.message}
                 onChange={handleChange}
-                required
-              ></textarea>
+                onBlur={handleBlur}
+                className=" border border-[#D0D5DD] text-black rounded-[8px] outline-0 w-full py-3 px-4"
+              />
+              {touched.message && errors.message && (
+                <p className="text-red-500 font-semibold text-sm">
+                  {errors.message}
+                </p>
+              )}
             </div>
             <div>
               <button
                 type="submit"
                 className="bg-yellow-400 hover:bg-yellow-200 p-3 text-black font-bold w-full rounded-md shadow-lg"
               >
-                Submit
+                {isLoading ? (
+                  <ClipLoader color="#ffffff" loading={true} size={15} />
+                ) : (
+                  "Submit"
+                )}
               </button>
             </div>
           </form>

@@ -8,6 +8,7 @@ const ImageUpload = ({ onFilesChange, existingImages = [] }) => {
     setImageUrls(existingImages);
   }, [existingImages]);
   const [selectedImages, setSelectedImages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [imageUrls, setImageUrls] = useState([]);
   const cloudinaryCloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME;
   const uploadPreset = import.meta.env.VITE_UPLOAD_PRESET;
@@ -19,6 +20,8 @@ const ImageUpload = ({ onFilesChange, existingImages = [] }) => {
           formData.append("file", file);
           formData.append("upload_preset", uploadPreset);
 
+          setLoading(true);
+
           const response = await axios.post(
             `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/upload`,
             formData
@@ -28,6 +31,7 @@ const ImageUpload = ({ onFilesChange, existingImages = [] }) => {
         })
       );
 
+      setLoading(false);
       setSelectedImages((prevImages) => [...prevImages, ...acceptedFiles]);
       setImageUrls((prevUrls) => [...prevUrls, ...uploadedUrls]);
       onFilesChange([...imageUrls, ...uploadedUrls]); // Update parent with new URLs
@@ -68,6 +72,7 @@ const ImageUpload = ({ onFilesChange, existingImages = [] }) => {
           </p>
         )}
       </div>
+      {loading && <p>Uploading...</p>}
 
       <div className="preview-container mt-4">
         {imageUrls.length > 0 ? (

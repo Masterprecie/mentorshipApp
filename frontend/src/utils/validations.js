@@ -61,3 +61,19 @@ export const registerValidationSchema = (requiredFields) => {
 
   return object(schema);
 };
+
+export const contactValidationSchema = () => {
+  return object({
+    fullName: string().required("Full Name is required"),
+    email: string().email().required("Email is required"),
+    message: string().required("Message is required"),
+    phoneNumber: string().required("Phone Number is required"),
+  });
+};
+
+export const changeEmailValidationSchema = () => {
+  return object({
+    newEmail: string().required("Email is required"),
+    reason: string().required("Reason for change is required"),
+  });
+};

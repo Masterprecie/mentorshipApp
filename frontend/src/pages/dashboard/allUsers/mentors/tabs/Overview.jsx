@@ -4,22 +4,143 @@ import { FaLinkedin } from "react-icons/fa";
 import { FaSquareFacebook } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import TwitterIcon from "assets/svg/twitter.svg?react";
-import { formatDate } from "../../../utils/helpers";
 import Education from "assets/svg/education.svg?react";
 import Experience from "assets/svg/experience.svg?react";
 import { useState } from "react";
-const Overview = ({ mentorProfile }) => {
+import { GoPencil } from "react-icons/go";
+import { IoCheckmarkOutline } from "react-icons/io5";
+import { formatDate } from "../../../../../utils/helpers";
+import Modal from "../../../../../components/modal/Modal";
+import { LiaTimesSolid } from "react-icons/lia";
+import {
+  useVerifyMentorIdMutation,
+  useDeclineMentorIdMutation,
+} from "../../../../../features/admin/api";
+import { alert } from "../../../../../utils/alert";
+
+const Overview = ({ mentorProfile, refetch }) => {
+  const [verifyId] = useVerifyMentorIdMutation();
+  const [declineId] = useDeclineMentorIdMutation();
   const [showAllExperience, setShowAllExperience] = useState(false);
   const [showAllEducation, setShowAllEducation] = useState(false);
   const [showFullAbout, setShowFullAbout] = useState(false);
+  const [email, setEmail] = useState(mentorProfile?.email);
+  const [reason, setReason] = useState("");
+  const [isEditEmail, setIsEditEmail] = useState(false);
+  const userId = mentorProfile?._id;
+
+  const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
+  const toggleEditEmail = () => setIsEditEmail(!isEditEmail);
 
   const toggleShowFullAbout = () => setShowFullAbout(!showFullAbout);
   const toggleExperience = () => setShowAllExperience(!showAllExperience);
   const toggleEducation = () => setShowAllEducation(!showAllEducation);
 
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+  const handleChangeEmail = (e, userId) => {
+    e.preventDefault();
+    console.log("Change email", userId, email);
+    verifyId(userId)
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res?.error) {
+          console.log(res?.message);
+          return;
+        }
+        alert({
+          type: "success",
+          message: "MentorID Verified successfully",
+          timer: 2000,
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        alert({
+          type: "error",
+          message: err?.data?.message || "An error occurred",
+          timer: 3000,
+        });
+      });
+    setIsEditEmail(false);
+  };
+
+  const handleApprove = (userId) => {
+    console.log("Approve User", userId);
+    verifyId({
+      mentorId: userId,
+    })
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res?.error) {
+          console.log(res?.message);
+          return;
+        }
+        alert({
+          type: "success",
+          message: "MentorID Verified successfully",
+          timer: 2000,
+          cb: () => refetch(),
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        alert({
+          type: "error",
+          message: err?.data?.message || "An error occurred",
+          timer: 3000,
+        });
+      });
+  };
+
+  const handleDecline = (e, userId, reason) => {
+    e.preventDefault();
+    console.log("Decline User", userId);
+    declineId({
+      mentorId: userId,
+      reason: reason,
+    })
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+        if (res?.error) {
+          console.log(res?.message);
+          return;
+        }
+        alert({
+          type: "success",
+          message: "MentorID Verified successfully",
+          timer: 2000,
+          cb: () => {
+            refetch();
+            handleClose();
+            setReason("");
+          },
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+        alert({
+          type: "error",
+          message: err?.data?.message || "An error occurred",
+          timer: 3000,
+        });
+      });
+  };
+
   const aboutLimit = 150;
   return (
-    <div className="grid grid-cols-12 pb-5">
+    <div className="grid grid-cols-12 gap-10 pb-5">
       <div className="col-span-6">
         <div>
           <p className="text-sm font-medium text-black">
@@ -94,7 +215,7 @@ const Overview = ({ mentorProfile }) => {
               {mentorProfile?.expertise?.map((exp, idx) => (
                 <p
                   key={idx}
-                  className="inline-block text-sm bg-orange-300 text-orange-700 px-4 py-2 rounded-md font-medium"
+                  className="inline-block text-sm mx-2 bg-orange-300 text-orange-700 px-4 py-2 rounded-md font-medium"
                 >
                   {exp}
                 </p>
@@ -138,10 +259,7 @@ const Overview = ({ mentorProfile }) => {
                           </div>
                           <div>
                             <p className="text-black rounded px-2 py-1 bg-blue-100 font-medium text-[10px]">
-                              {formatDate(exp.startDate)} -{" "}
-                              {exp.endDate
-                                ? formatDate(exp.endDate)
-                                : "PRESENT"}
+                              {formatDate ? formatDate(exp.endDate) : "PRESENT"}
                             </p>
                           </div>
                         </div>
@@ -200,12 +318,132 @@ const Overview = ({ mentorProfile }) => {
         </div>
         {/* </div> */}
       </div>
+
+      <div className="col-span-5">
+        <div className="text-right text-white space-x-3">
+          <button className="bg-gray-500 capitalize rounded-md p-2 text-sm font-medium">
+            {mentorProfile?.role}
+          </button>
+          <button
+            onClick={() => handleApprove(userId)}
+            className="bg-green-500 rounded-md p-2 text-sm font-medium"
+          >
+            Approve ID
+          </button>
+          <button
+            onClick={handleOpen}
+            className="bg-red-500 rounded-md p-2 text-sm font-medium"
+          >
+            Decline ID
+          </button>
+        </div>
+        <div className=" mt-5 ">
+          <div className="flex items-center gap-20">
+            {isEditEmail ? (
+              <input
+                type="email"
+                className="border p-2 rounded outline-0"
+                value={email}
+                onChange={handleEmailChange}
+              />
+            ) : (
+              <p className="text-sm text-gray-500 font-medium ">
+                Email : {mentorProfile?.email}
+              </p>
+            )}
+
+            {isEditEmail ? (
+              <div className="flex items-center gap-3">
+                <div className="rounded-full border cursor-pointer bg-gray-100 h-6 w-6 flex items-center justify-center">
+                  <LiaTimesSolid
+                    onClick={toggleEditEmail}
+                    className="text-red-500"
+                  />
+                </div>
+                <div className="rounded-full border cursor-pointer bg-gray-100 h-6 w-6 flex items-center justify-center">
+                  <IoCheckmarkOutline
+                    onClick={(e) => handleChangeEmail(e, userId)}
+                    className="text-green-500"
+                  />
+                </div>
+              </div>
+            ) : (
+              <div className="rounded-full border cursor-pointer bg-gray-100 h-6 w-6 flex items-center justify-center">
+                <GoPencil onClick={toggleEditEmail} />
+              </div>
+            )}
+          </div>
+
+          {mentorProfile?.mentorIdcard.length > 0 ? (
+            <div className="pt-3">
+              <p className="pb-2 text-gray-500 font-medium text-sm">
+                Uploaded ID Card
+              </p>
+              <div className="flex flex-wrap gap-5">
+                {mentorProfile?.mentorIdcard.map((idcard, idx) => (
+                  <div key={idx} className="relative">
+                    <img
+                      src={idcard}
+                      alt="image"
+                      className="w-[300px] h-[300px]"
+                    />
+                    <div
+                      className={`absolute capitalize top-2 right-2 rounded-xl py-1 px-3 ${
+                        mentorProfile?.idCardStatus === "verified"
+                          ? "bg-green-500"
+                          : mentorProfile?.idCardStatus === "declined"
+                          ? "bg-red-500"
+                          : "bg-yellow-500"
+                      } text-white`}
+                    >
+                      {mentorProfile?.idCardStatus}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p className="mt-5">ID Card Not Uploaded Yet</p>
+          )}
+        </div>
+      </div>
+      <Modal open={open} handleClose={handleClose}>
+        <div className="px-[20px]  w-[500px] ">
+          <h1 className="text-2xl font-semibold">Reason for declining</h1>
+          <form onSubmit={(e) => handleDecline(e, userId, reason)}>
+            <textarea
+              rows={5}
+              value={reason}
+              onChange={(e) => setReason(e.target.value)}
+              className="border w-full p-2 mt-5 outline-0"
+              placeholder="Reason for declining"
+            />
+
+            <div className="flex justify-end gap-5 mt-5">
+              <button
+                type="button"
+                onClick={handleClose}
+                className="border rounded-md px-3 py-2"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="bg-red-500 text-white rounded-md px-3 py-2"
+              >
+                Decline
+              </button>
+            </div>
+          </form>
+        </div>
+      </Modal>
     </div>
   );
 };
 
 Overview.propTypes = {
   mentorProfile: propTypes.object.isRequired,
+  refetch: propTypes.func.isRequired,
 };
 
 export default Overview;
