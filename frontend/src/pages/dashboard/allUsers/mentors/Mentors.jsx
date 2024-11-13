@@ -100,6 +100,8 @@ const Mentors = () => {
         onChangeRowsPerPage={handleChangeRowsPerPage}
         onSearch={setSearchQuery}
         error={error}
+        emailRequest={false}
+        editActions={true}
       />
     </div>
   );

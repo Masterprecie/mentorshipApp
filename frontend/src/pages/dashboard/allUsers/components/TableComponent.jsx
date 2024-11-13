@@ -23,6 +23,9 @@ export default function TableComponent({
   columns,
   data,
   onSearch,
+  searchBar = true,
+  emailRequest,
+  editActions,
   // error,
 }) {
   const navigate = useNavigate();
@@ -54,16 +57,18 @@ export default function TableComponent({
 
   return (
     <>
-      <div className="flex p-[16px] justify-between border shadow-md items-center mt-10">
-        <div className="flex gap-8 items-center">
-          <input
-            onChange={(e) => onSearch(e.target.value)}
-            type="search"
-            placeholder="Search here..."
-            className="border rounded-[8px] outline-0 py-[8px] px-[24px] shadow-md border-[#BEBEBE]"
-          />
+      {searchBar && (
+        <div className="flex p-[16px] justify-between border shadow-md items-center mt-10">
+          <div className="flex gap-8 items-center">
+            <input
+              onChange={(e) => onSearch(e.target.value)}
+              type="search"
+              placeholder="Search here..."
+              className="border rounded-[8px] outline-0 py-[8px] px-[24px] shadow-md border-[#BEBEBE]"
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <Paper sx={{ width: "100%", overflow: "hidden" }}>
         {isLoading ? (
@@ -94,17 +99,19 @@ export default function TableComponent({
                         {column.label}
                       </TableCell>
                     ))}
-                    <TableCell
-                      sx={{
-                        fontSize: "14px",
-                        backgroundColor: "#f5f5f5",
-                        fontWeight: "bold",
-                        color: "gray",
-                      }}
-                      align="right"
-                    >
-                      Actions
-                    </TableCell>
+                    {(emailRequest || editActions) && (
+                      <TableCell
+                        sx={{
+                          fontSize: "14px",
+                          backgroundColor: "#f5f5f5",
+                          fontWeight: "bold",
+                          color: "gray",
+                        }}
+                        align="right"
+                      >
+                        Actions
+                      </TableCell>
+                    )}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -167,21 +174,49 @@ export default function TableComponent({
                           );
                         }
                       })}
-                      <TableCell align="right">
-                        <IconButton
-                          onClick={(event) => handleMenuOpen(event, row._id)}
-                        >
-                          <HiOutlineDotsVertical />
-                        </IconButton>
-                        <Menu
-                          anchorEl={anchorEl}
-                          open={Boolean(anchorEl)}
-                          onClose={handleMenuClose}
-                        >
-                          <MenuItem onClick={handleEdit}>View</MenuItem>
-                          <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                        </Menu>
-                      </TableCell>
+                      {(emailRequest || editActions) && (
+                        <TableCell align="right">
+                          {editActions && (
+                            <>
+                              <IconButton
+                                onClick={(event) =>
+                                  handleMenuOpen(event, row._id)
+                                }
+                              >
+                                <HiOutlineDotsVertical />
+                              </IconButton>
+                              <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleMenuClose}
+                              >
+                                <MenuItem onClick={handleEdit}>View</MenuItem>
+                                <MenuItem onClick={handleDelete}>
+                                  Delete
+                                </MenuItem>
+                              </Menu>
+                            </>
+                          )}
+                          {emailRequest && (
+                            <>
+                              <IconButton
+                                onClick={(event) =>
+                                  handleMenuOpen(event, row.userId)
+                                }
+                              >
+                                <HiOutlineDotsVertical />
+                              </IconButton>
+                              <Menu
+                                anchorEl={anchorEl}
+                                open={Boolean(anchorEl)}
+                                onClose={handleMenuClose}
+                              >
+                                <MenuItem onClick={handleEdit}>Change</MenuItem>
+                              </Menu>
+                            </>
+                          )}
+                        </TableCell>
+                      )}
                     </TableRow>
                   ))}
                 </TableBody>
@@ -219,6 +254,9 @@ TableComponent.propTypes = {
   isLoading: PropTypes.bool,
   onSearch: PropTypes.func,
   error: PropTypes.object,
+  searchBar: PropTypes.bool,
+  emailRequest: PropTypes.bool,
+  editActions: PropTypes.bool,
 };
 
 // Function to determine dot color based on status

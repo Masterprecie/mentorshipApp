@@ -29,6 +29,7 @@ import AllRequests from "./pages/dashboard/allRequests";
 import AllSupports from "./pages/dashboard/allSupports";
 import Notifications from "./pages/dashboard/notifications";
 import EmailChange from "./pages/dashboard/settings/EmailChange";
+import AdminHome from "./pages/dashboard/adminHome";
 
 const App = () => {
   const location = useLocation();
@@ -67,6 +68,7 @@ const App = () => {
         {/* Dashboard Routes */}
         <Route path="/dashboard" element={<DashboardLayout />}>
           <Route path="home" element={<DashHome />} />
+          <Route path="admin" element={<AdminHome />} />
           <Route path="explore" element={<Explore />} />
           <Route path="settings" element={<Settings />} />
           <Route path="settings/change-password" element={<PasswordChange />} />

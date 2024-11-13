@@ -1,4 +1,5 @@
 const contactModel = require("../models/contactModel");
+const notificationModel = require("../models/notificationModel");
 const userModel = require("../models/userModel");
 
 const getAllMentors = async (req, res, next) => {
@@ -102,9 +103,50 @@ const getAllContacts = async (req, res, next) => {
   }
 };
 
+const getUserNotifications = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const notifications = await notificationModel.find({ userId: userId });
+
+    if (!notifications.length) {
+      return res.status(404).send({
+        message: "No notifications found",
+      });
+    }
+    res.status(200).json(notifications);
+  } catch (error) {
+    next(error);
+  }
+};
+
+const deleteUserNotification = async (req, res, next) => {
+  try {
+    const { notificationId } = req.params;
+
+    const notification = await notificationModel.findByIdAndDelete(
+      notificationId
+    );
+
+    if (!notification) {
+      return res.status(404).send({
+        message: "Notification not found",
+      });
+    }
+
+    res.status(200).send({
+      message: "Notification deleted successfully",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   getAllMentors,
   getAMentor,
   contact,
   getAllContacts,
+  getUserNotifications,
+  deleteUserNotification,
 };

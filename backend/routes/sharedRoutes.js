@@ -4,7 +4,11 @@ const {
   getAMentor,
   contact,
   getAllContacts,
+  getUserNotifications,
+  deleteUserNotification,
 } = require("../controllers/sharedController");
+const authenticatedUser = require("../middlewares/authenticatedUser");
+
 const sharedRoutes = express.Router();
 
 /**
@@ -73,7 +77,7 @@ sharedRoutes.get("/mentor/:mentorId", getAMentor);
  * /api/v1/user/contact:
  *   post:
  *     summary: Contact Us
- *     tags: [Mentors]
+ *     tags: [Contact]
  *     security: []
  *     requestBody:
  *       required: true
@@ -108,7 +112,7 @@ sharedRoutes.post("/contact", contact);
  * /api/v1/user/contact:
  *   get:
  *     summary: Get all contacts with pagination
- *     tags: [Mentors]
+ *     tags: [Contact]
  *     security: []
  *     parameters:
  *       - in: query
@@ -132,5 +136,63 @@ sharedRoutes.post("/contact", contact);
  *         description: Internal server error
  */
 sharedRoutes.get("/contact", getAllContacts);
+
+/**
+ * @swagger
+ * /api/v1/user/notifications/{userId}:
+ *   get:
+ *     summary: Get user notifications
+ *     tags: [Notifications]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     responses:
+ *       200:
+ *         description: Notifications retrieved successfully
+ *       404:
+ *         description: No notifications found
+ *       500:
+ *         description: Internal server error
+ */
+sharedRoutes.get(
+  "/notifications/:userId",
+  authenticatedUser,
+  getUserNotifications
+);
+
+/**
+ * @swagger
+ * /api/v1/user/notifications/{notificationId}:
+ *   delete:
+ *     summary: Delete user notification
+ *     tags: [Notifications]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: notificationId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Notification ID
+ *     responses:
+ *       200:
+ *         description: Notification deleted successfully
+ *       404:
+ *         description: Notification not found
+ *       500:
+ *         description: Internal server error
+ */
+sharedRoutes.delete(
+  "/notifications/:notificationId",
+  authenticatedUser,
+  deleteUserNotification
+);
 
 module.exports = sharedRoutes;

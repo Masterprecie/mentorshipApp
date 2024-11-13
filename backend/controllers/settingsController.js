@@ -67,7 +67,7 @@ const changeEmailRequest = async (req, res, next) => {
     await emailChangeModel.create({
       newEmail,
       reason,
-      user: user._id,
+      userId: user._id,
     });
 
     res.status(200).json({

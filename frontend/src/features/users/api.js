@@ -41,6 +41,18 @@ export const usersApi = createApi({
         body: payload,
       }),
     }),
+    getNotifications: builder.query({
+      query: (id) => ({
+        url: `/user/notifications/${id}`,
+        method: "GET",
+      }),
+    }),
+    deleteNotification: builder.mutation({
+      query: (id) => ({
+        url: `/user/notifications/${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -49,4 +61,6 @@ export const {
   useGetMentorByIdQuery,
   useContactMutation,
   useChangeEmailRequestMutation,
+  useGetNotificationsQuery,
+  useDeleteNotificationMutation,
 } = usersApi;

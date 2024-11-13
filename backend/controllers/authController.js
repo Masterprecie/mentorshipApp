@@ -53,7 +53,7 @@ const register = async (req, res, next) => {
     });
 
     await tokenModel.create({
-      user: newUser._id,
+      userId: newUser._id,
       otp,
       otpExpires,
       otpPurpose: "verify-email",
@@ -86,7 +86,7 @@ const verifyEmail = async (req, res, next) => {
     }
 
     const token = await tokenModel.findOne({
-      user: user._id,
+      userId: user._id,
       otp,
       otpPurpose: "verify-email",
     });
@@ -151,7 +151,7 @@ const login = async (req, res, next) => {
     );
 
     await tokenModel.create({
-      user: user._id,
+      userId: user._id,
       refreshToken,
     });
 
@@ -176,6 +176,7 @@ const login = async (req, res, next) => {
 const resendOTP = async (req, res, next) => {
   try {
     const { email } = req.body;
+
     const user = await userModel.findOne({ email });
 
     if (!user) {
@@ -184,22 +185,38 @@ const resendOTP = async (req, res, next) => {
       });
     }
 
+    if (user.isEmailVerified) {
+      return res.status(400).send({
+        message: "Email is already verified",
+      });
+    }
+
     const otp = generateOTP();
     const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // OTP expires in 10 minutes
 
-    user.otp = otp;
-    user.otpExpires = otpExpires;
-    user.otpPurpose = "verify-email";
-    await user.save();
+    // Delete any existing OTP tokens for the user
+    await tokenModel.deleteMany({
+      userId: user._id,
+      otpPurpose: "verify-email",
+    });
 
+    // Create a new OTP token
+    await tokenModel.create({
+      userId: user._id,
+      otp,
+      otpExpires,
+      otpPurpose: "verify-email",
+    });
+
+    // Send the OTP to the user's email
     await sendEmail(
       email,
-      "Email Verification",
-      `Dear ${user.firstName}, Your OTP code is: ${otp}. It expires in 10mins.`
+      "Resend OTP",
+      `Dear ${user.firstName}, your OTP code is: ${otp}. It expires in 10 minutes.`
     );
 
     res.status(200).send({
-      message: "OTP resent successfully, please check your email",
+      message: "OTP resent successfully",
     });
   } catch (error) {
     next(error);
@@ -217,7 +234,7 @@ const refreshToken = async (req, res, next) => {
       });
     }
 
-    const user = await userModel.findById(userToken.user);
+    const user = await userModel.findById(userToken.userId);
 
     const token = jwt.sign(
       { id: user._id, email: user.email, role: user.role },

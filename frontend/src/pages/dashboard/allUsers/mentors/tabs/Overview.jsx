@@ -15,12 +15,14 @@ import { LiaTimesSolid } from "react-icons/lia";
 import {
   useVerifyMentorIdMutation,
   useDeclineMentorIdMutation,
+  useChangeEmaiilMutation,
 } from "../../../../../features/admin/api";
 import { alert } from "../../../../../utils/alert";
 
 const Overview = ({ mentorProfile, refetch }) => {
   const [verifyId] = useVerifyMentorIdMutation();
   const [declineId] = useDeclineMentorIdMutation();
+  const [changeEmail] = useChangeEmaiilMutation();
   const [showAllExperience, setShowAllExperience] = useState(false);
   const [showAllEducation, setShowAllEducation] = useState(false);
   const [showFullAbout, setShowFullAbout] = useState(false);
@@ -49,7 +51,7 @@ const Overview = ({ mentorProfile, refetch }) => {
   const handleChangeEmail = (e, userId) => {
     e.preventDefault();
     console.log("Change email", userId, email);
-    verifyId(userId)
+    changeEmail({ userId, newEmail: email })
       .unwrap()
       .then((res) => {
         console.log(res);
@@ -59,8 +61,12 @@ const Overview = ({ mentorProfile, refetch }) => {
         }
         alert({
           type: "success",
-          message: "MentorID Verified successfully",
+          message: "Email Changed Successfully",
           timer: 2000,
+          cb: () => {
+            refetch();
+            setIsEditEmail(false);
+          },
         });
       })
       .catch((err) => {
@@ -71,7 +77,6 @@ const Overview = ({ mentorProfile, refetch }) => {
           timer: 3000,
         });
       });
-    setIsEditEmail(false);
   };
 
   const handleApprove = (userId) => {

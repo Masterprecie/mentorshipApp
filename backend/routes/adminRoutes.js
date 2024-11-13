@@ -7,6 +7,9 @@ const {
   declineMentorId,
   verifyMentorId,
   getAllEmailRequest,
+  changeUserEmail,
+  getMentorMenteeStats,
+  getMonthlyAnalytics,
 } = require("../controllers/adminController");
 const adminRoutes = express.Router();
 //middlewares
@@ -138,7 +141,7 @@ adminRoutes.put("/mentor/declineId", declineMentorId);
 
 /**
  * @swagger
- * /api/v1/admin/email-request:
+ * /api/v1/admin/email-change-request:
  *   get:
  *     summary: Get all email change request with pagination
  *     tags: [Admin]
@@ -165,6 +168,84 @@ adminRoutes.put("/mentor/declineId", declineMentorId);
  *       500:
  *         description: Internal server error
  */
-adminRoutes.get("/email-request", getAllEmailRequest);
+adminRoutes.get("/email-change-request", getAllEmailRequest);
+
+/**
+ * @swagger
+ * /api/v1/admin/{userId}/change-email:
+ *   put:
+ *     summary: Change user email
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: User ID
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               newEmail:
+ *                 type: string
+ *                 description: New email address
+ *             required:
+ *               - newEmail
+ *     responses:
+ *       200:
+ *         description: Email changed successfully
+ *       400:
+ *         description: Email is already in use
+ *       404:
+ *         description: User not found
+ *       500:
+ *         description: Internal server error
+ */
+adminRoutes.put("/:userId/change-email", changeUserEmail);
+
+/**
+ * @swagger
+ * /api/v1/admin/stats:
+ *   get:
+ *     summary: Get mentor and mentee stats
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Stats retrieved successfully
+ *       500:
+ *         description: Internal server error
+ */
+adminRoutes.get("/stats", getMentorMenteeStats);
+
+/**
+ * @swagger
+ * /api/v1/admin/analytics:
+ *   get:
+ *     summary: Get monthly analytics for mentors and mentees
+ *     tags: [Admin]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: year
+ *         required: true
+ *         schema:
+ *           type: integer
+ *         description: Year for which to get the analytics
+ *     responses:
+ *       200:
+ *         description: Analytics retrieved successfully
+ *       500:
+ *         description: Internal server error
+ */
+adminRoutes.get("/analytics", getMonthlyAnalytics);
 
 module.exports = adminRoutes;

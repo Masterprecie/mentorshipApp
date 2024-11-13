@@ -45,7 +45,7 @@ const Login = () => {
           timer: 1000,
           cb: () => {
             res.user.role === "admin"
-              ? navigate("/dashboard/home")
+              ? navigate("/dashboard/admin")
               : navigate("/");
           },
         });

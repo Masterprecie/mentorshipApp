@@ -3,7 +3,7 @@ const mongoosePaginate = require("mongoose-paginate-v2");
 
 const emailChangeSchema = new Schema(
   {
-    user: {
+    userId: {
       type: Schema.Types.ObjectId,
       required: true,
       ref: "user",

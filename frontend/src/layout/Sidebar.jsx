@@ -15,7 +15,7 @@ import { Link, Outlet, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logout } from "../features/auth/slice";
 // import picture from "assets/svg/user-icon.svg";
-
+import { IoIosNotificationsOutline } from "react-icons/io";
 import { IoMdArrowDropdown } from "react-icons/io";
 import { FaRegUserCircle } from "react-icons/fa";
 import { useAuth } from "../features/auth/hook";
@@ -114,6 +114,8 @@ export default function DashboardSidebar(props) {
           <div className=" w-full">
             <div>
               <div className="flex items-center gap-5 justify-end">
+                <IoIosNotificationsOutline size={30} />
+
                 <div className="relative" ref={dropdownRef}>
                   <button
                     onClick={toggleDropdown}

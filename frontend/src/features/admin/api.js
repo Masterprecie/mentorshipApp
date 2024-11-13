@@ -48,6 +48,22 @@ export const adminApi = createApi({
         method: "GET",
       }),
     }),
+    getDashboardStats: builder.query({
+      query: () => ({
+        url: `/admin/stats`,
+        method: "GET",
+      }),
+    }),
+
+    getDashboardAnalytics: builder.query({
+      query: (year) => {
+        const yearParams = year ? `?year=${year}` : "";
+        return {
+          url: `/admin/analytics${yearParams}`,
+          method: "GET",
+        };
+      },
+    }),
 
     verifyMentorId: builder.mutation({
       query: (payload) => ({
@@ -63,6 +79,39 @@ export const adminApi = createApi({
         body: payload,
       }),
     }),
+    getAllEmailChangeRequest: builder.query({
+      query: ({ page, limit }) => {
+        const pageParams = page ? `page=${page}` : "";
+        const limitParams = limit ? `limit=${limit}` : "";
+        const combinedParams = [pageParams, limitParams]
+          .filter(Boolean)
+          .join("&");
+        return {
+          url: `/admin/email-change-request?${combinedParams}`,
+          method: "GET",
+        };
+      },
+    }),
+    getAllContactUsMessage: builder.query({
+      query: ({ page, limit }) => {
+        const pageParams = page ? `page=${page}` : "";
+        const limitParams = limit ? `limit=${limit}` : "";
+        const combinedParams = [pageParams, limitParams]
+          .filter(Boolean)
+          .join("&");
+        return {
+          url: `/user/contact?${combinedParams}`,
+          method: "GET",
+        };
+      },
+    }),
+    changeEmaiil: builder.mutation({
+      query: (payload) => ({
+        url: `/admin/${payload.userId}/change-email`,
+        method: "PUT",
+        body: payload,
+      }),
+    }),
   }),
 });
 
@@ -73,4 +122,9 @@ export const {
   useGetMenteeByIdQuery,
   useVerifyMentorIdMutation,
   useDeclineMentorIdMutation,
+  useGetAllContactUsMessageQuery,
+  useGetAllEmailChangeRequestQuery,
+  useChangeEmaiilMutation,
+  useGetDashboardStatsQuery,
+  useGetDashboardAnalyticsQuery,
 } = adminApi;

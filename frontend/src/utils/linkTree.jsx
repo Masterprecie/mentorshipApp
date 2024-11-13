@@ -14,7 +14,13 @@ export const links = [
     name: "Home",
     url: "/dashboard/home",
     icon: <SlHome />,
-    roles: ["admin", "user"],
+    roles: ["user"],
+  },
+  {
+    name: "Dashboard",
+    url: "/dashboard/admin",
+    icon: <SlHome />,
+    roles: ["admin"],
   },
   {
     name: "Users",
