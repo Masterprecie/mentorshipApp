@@ -29,9 +29,8 @@ const Messages = () => {
   const [selectedChat, setSelectedChat] = useState(null);
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
-
-  console.log(messages);
-
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
   // Create or load the chat
   useEffect(() => {
     const initializeChat = async () => {
@@ -105,17 +104,36 @@ const Messages = () => {
 
   console.log(selectedChat);
   return (
-    <div className="flex h-screen pt-16">
-      <Sidebar currentUser={currentUser} onSelectChat={setSelectedChat} />
+    <div className="flex min-h-screen pt-16 relative">
+      <div
+        className={`fixed inset-y-0 z-50 bg-gray-200 overflow-y-auto transition-transform transform ${
+          isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } sm:relative sm:translate-x-0 w-64`}
+      >
+        <Sidebar
+          currentUser={currentUser}
+          onSelectChat={(chat) => {
+            setSelectedChat(chat);
+            setIsSidebarOpen(false);
+          }}
+        />
+      </div>
       <div className="flex-grow px-3">
         {selectedChat ? (
           <>
-            <div className="flex items-center justify-between p-4 bg-gray-100 border-b border-gray-300">
+            <div className="flex items-center justify-between p-4 border-b border-gray-300">
               <h2 className="text-xl font-semibold">
                 {currentUser.role === "mentor"
                   ? selectedChat?.menteeName
                   : selectedChat?.mentorName}{" "}
               </h2>
+
+              <button
+                className="block  md:hidden rounded px-2 py-1 bg-blue-500 text-white"
+                onClick={toggleSidebar}
+              >
+                {isSidebarOpen ? "Close" : "Open"}
+              </button>
             </div>
             <div className="messages flex-grow space-y-4 pt-4 h-[350px] overflow-y-auto">
               {messages.length > 0 ? (

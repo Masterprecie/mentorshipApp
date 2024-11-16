@@ -148,14 +148,22 @@ const Login = () => {
               />
             )}
           </div>
-          <Link to="/forget-password">
-            <p className="text-right font-medium text-xs">Forget Password</p>
-          </Link>
-          {touched.password && errors.password && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.password}
-            </p>
-          )}
+          <div className="flex items-center justify-between">
+            <div>
+              {touched.password && errors.password && (
+                <p className="text-red-500 inline-block font-semibold text-sm">
+                  {errors.password}
+                </p>
+              )}
+            </div>
+
+            <Link
+              to="/forget-password"
+              className=" text-white font-medium text-xs"
+            >
+              <p>Forget Password</p>
+            </Link>
+          </div>
         </div>
 
         <div className="pt-5 col-span-2">
