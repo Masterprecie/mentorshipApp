@@ -85,7 +85,7 @@ const MentorDetails = () => {
                 <TbMessage
                   onClick={() => handleChat(singleMentor)}
                   size={40}
-                  className="bg-white shadow-md p-3 rounded-md w-16 h-16"
+                  className="bg-white cursor-pointer shadow-md p-3 rounded-md w-16 h-16"
                 />
                 <IoMdHeartEmpty
                   size={30}
