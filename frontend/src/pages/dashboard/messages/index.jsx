@@ -30,6 +30,8 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
 
+  console.log(messages);
+
   // Create or load the chat
   useEffect(() => {
     const initializeChat = async () => {
@@ -100,6 +102,8 @@ const Messages = () => {
       messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages, selectedChat]);
+
+  console.log(selectedChat);
   return (
     <div className="flex h-screen pt-16">
       <Sidebar currentUser={currentUser} onSelectChat={setSelectedChat} />
@@ -114,47 +118,52 @@ const Messages = () => {
               </h2>
             </div>
             <div className="messages flex-grow space-y-4 pt-4 h-[350px] overflow-y-auto">
-              {messages.map((message) => {
-                const timestamp = message.createdAt?.seconds
-                  ? new Date(message.createdAt.seconds * 1000)
-                  : null;
-                return (
-                  <div
-                    key={message.id}
-                    className={`flex ${
-                      message.senderId === currentUser.id
-                        ? "justify-end"
-                        : "justify-start"
-                    }`}
-                  >
-                    <div>
-                      <div
-                        className={`max-w-xs p-3 rounded-lg shadow-md ${
-                          message.senderId === currentUser.id
-                            ? "bg-blue-500 text-white rounded-br-none" // Mentee's styling
-                            : "bg-gray-300 text-black rounded-bl-none" // Mentor's styling
-                        }`}
-                      >
-                        <p className="font-medium">{message.senderName}</p>
-                        <p>{message.text}</p>
-                      </div>
-                      {timestamp && (
-                        <p
-                          className={`text-xs text-gray-500 mt-1 ${
+              {messages.length > 0 ? (
+                messages.map((message) => {
+                  const timestamp = message.createdAt?.seconds
+                    ? new Date(message.createdAt.seconds * 1000)
+                    : null;
+                  return (
+                    <div
+                      key={message.id}
+                      className={`flex ${
+                        message.senderId === currentUser.id
+                          ? "justify-end"
+                          : "justify-start"
+                      }`}
+                    >
+                      <div>
+                        <div
+                          className={`max-w-xs p-3 rounded-lg shadow-md ${
                             message.senderId === currentUser.id
-                              ? "text-right" // Mentee's styling
-                              : "text-left" // Mentor's styling
+                              ? "bg-blue-500 text-white rounded-br-none" // Mentee's styling
+                              : "bg-gray-300 text-black rounded-bl-none" // Mentor's styling
                           }`}
                         >
-                          {formatDistanceToNow(timestamp, {
-                            addSuffix: true,
-                          })}
-                        </p>
-                      )}
+                          <p className="font-medium">{message.senderName}</p>
+                          <p>{message.text}</p>
+                        </div>
+                        {timestamp && (
+                          <p
+                            className={`text-xs text-gray-500 mt-1 ${
+                              message.senderId === currentUser.id
+                                ? "text-right" // Mentee's styling
+                                : "text-left" // Mentor's styling
+                            }`}
+                          >
+                            {formatDistanceToNow(timestamp, {
+                              addSuffix: true,
+                            })}
+                          </p>
+                        )}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })
+              ) : (
+                <p className="text-center">No messages available</p>
+              )}
+
               <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSendMessage} className="mt-4 flex">
