@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetMentorByIdQuery } from "../../features/users/api";
 import Tabs from "../dashboard/profile/tabs/Tabs";
 import Reviews from "./tabs/Reviews";
@@ -9,6 +9,7 @@ import { TbMessage } from "react-icons/tb";
 import { IoMdHeartEmpty } from "react-icons/io";
 
 const MentorDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { data: singleMentor, isLoading, error } = useGetMentorByIdQuery(id);
 
@@ -32,6 +33,13 @@ const MentorDetails = () => {
     },
   ];
 
+  const handleChat = (singleMentor) => {
+    const fullName = `${singleMentor?.firstName} ${singleMentor?.lastName}`;
+    console.log(fullName);
+    navigate(
+      `/dashboard/messages?mentorId=${singleMentor._id}&mentorName=${fullName}`
+    );
+  };
   return (
     <div className="">
       {isLoading ? (
@@ -75,6 +83,7 @@ const MentorDetails = () => {
               </div>
               <div className="mt-10 flex items-center gap-4">
                 <TbMessage
+                  onClick={() => handleChat(singleMentor)}
                   size={40}
                   className="bg-white shadow-md p-3 rounded-md w-16 h-16"
                 />

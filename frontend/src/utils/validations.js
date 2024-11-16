@@ -41,8 +41,8 @@ export const registerValidationSchema = (requiredFields) => {
       .of(string())
       .max(2, "You can select a maximum of 2 interests")
       .required("Interest is required"),
-    age: string().required("Age is required"),
-    gender: string().required("Gender is required"),
+    // age: string().required("Age is required"),
+    // gender: string().required("Gender is required"),
     yearsOfExperience: string().required("Years of Experience is required"),
     about: string().required("About is required"),
     linkedinUrl: string().required("LinkedinUrl is required"),

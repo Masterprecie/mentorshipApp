@@ -77,17 +77,18 @@ const Login = () => {
     onSubmit: (values) => loginUser(values),
   });
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen">
+    <div className="bg-authBg bg-cover bg-center bg-no-repeat bg-[#000000CC] relative flex flex-col justify-center items-center min-h-screen">
+      <div className="absolute inset-0 bg-black opacity-80"></div>
       <form
         onSubmit={handleSubmit}
-        className="mt-[30px] w-full space-y-5 max-w-[559px] mx-auto px-4"
+        className="mt-[30px] w-full space-y-5 max-w-[559px] mx-auto px-4 relative"
       >
-        <div className="text-center text-2xl font-bold">Login</div>
+        <div className="text-center text-white text-2xl font-bold">Login</div>
         {/* Email */}
         <div>
           <label
             htmlFor="email"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white font-medium block pb-2"
           >
             Email
           </label>
@@ -109,7 +110,7 @@ const Login = () => {
         <div>
           <label
             htmlFor="password"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white font-medium block pb-2"
           >
             Password
           </label>
@@ -169,10 +170,10 @@ const Login = () => {
             )}
           </button>
         </div>
-        <div className="pt-3 pb-2 text-center">
-          <p className="text-[#475467] text-sm">
+        <div className="pt-3 pb-2 text-center relative">
+          <p className="text-white text-sm">
             Don&apos;t have an account?{" "}
-            <span className="text-[#004225] font-semibold text-sm">
+            <span className="text-[#536de2] font-semibold text-sm">
               <Link to="/signup">Sign Up</Link>{" "}
             </span>
           </p>

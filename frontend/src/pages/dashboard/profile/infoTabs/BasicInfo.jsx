@@ -133,7 +133,7 @@ const BasicInfo = ({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
+        <div className="grid grid-cols-3 gap-5">
           {/* Age */}
           <div>
             <label
@@ -178,6 +178,33 @@ const BasicInfo = ({
               </p>
             )}
           </div>
+          {/* gender */}
+          <div>
+            <label
+              htmlFor="gender"
+              className="text-sm text-[#474747] font-medium block pb-2"
+            >
+              Gender
+            </label>
+
+            <select
+              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3.5 px-4"
+              name="gender"
+              value={values.gender}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            >
+              <option value="">Select a Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+
+            {touched.gender && errors.gender && (
+              <p className="text-red-500 font-semibold text-sm">
+                {errors.gender}
+              </p>
+            )}
+          </div>
         </div>
 
         <div className="grid grid-cols-2 gap-5">
@@ -217,7 +244,7 @@ const BasicInfo = ({
               value={values.country}
               onChange={handleChange}
               onBlur={handleBlur}
-              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
+              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3.5 px-4"
             >
               <option value="">Select</option>
               {sortedOptions.map((option) => (

@@ -40,7 +40,7 @@ const MenteeForm = ({
         <div>
           <label
             htmlFor="firstName"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white font-medium block pb-2"
           >
             First Name
           </label>
@@ -63,7 +63,7 @@ const MenteeForm = ({
         <div>
           <label
             htmlFor="lastName"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             Last Name
           </label>
@@ -87,7 +87,7 @@ const MenteeForm = ({
         <div>
           <label
             htmlFor="email"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             Email
           </label>
@@ -105,12 +105,12 @@ const MenteeForm = ({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
-          {/* Age */}
+        {/* <div className="grid grid-cols-2 gap-5">
+          Age
           <div>
             <label
               htmlFor="email"
-              className="text-sm text-[#474747] font-medium block pb-2"
+              className="text-sm text-white  font-medium block pb-2"
             >
               Age
             </label>
@@ -127,11 +127,11 @@ const MenteeForm = ({
               <p className="text-red-500 font-semibold text-sm">{errors.age}</p>
             )}
           </div>
-          {/* Gender */}
+          Gender
           <div>
             <label
               htmlFor="email"
-              className="text-sm text-[#474747] font-medium block pb-2"
+              className="text-sm text-white  font-medium block pb-2"
             >
               Gender
             </label>
@@ -153,37 +153,13 @@ const MenteeForm = ({
               </p>
             )}
           </div>
-        </div>
-
-        {/* Interest */}
-        <div>
-          <label
-            htmlFor="email"
-            className="text-sm text-[#474747] font-medium block pb-2"
-          >
-            Interest (2max)
-          </label>
-
-          <PrimaryMultiSelect
-            options={interestOptions}
-            value={values.interest}
-            onChange={(selectedOptions) =>
-              setFieldValue("interest", selectedOptions)
-            }
-            onBlur={() => handleBlur("interest")}
-          />
-          {touched.interest && errors.interest && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.interest}
-            </p>
-          )}
-        </div>
+        </div> */}
 
         {/* Password */}
         <div>
           <label
             htmlFor="password"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             Password
           </label>
@@ -228,11 +204,35 @@ const MenteeForm = ({
           )}
         </div>
 
+        {/* Interest */}
+        <div className="col-span-2">
+          <label
+            htmlFor="email"
+            className="text-sm text-white  font-medium block pb-2"
+          >
+            Interest (2max)
+          </label>
+
+          <PrimaryMultiSelect
+            options={interestOptions}
+            value={values.interest}
+            onChange={(selectedOptions) =>
+              setFieldValue("interest", selectedOptions)
+            }
+            onBlur={() => handleBlur("interest")}
+          />
+          {touched.interest && errors.interest && (
+            <p className="text-red-500 font-semibold text-sm">
+              {errors.interest}
+            </p>
+          )}
+        </div>
+
         {/* about */}
         <div className="col-span-2">
           <label
             htmlFor="about"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             About
           </label>

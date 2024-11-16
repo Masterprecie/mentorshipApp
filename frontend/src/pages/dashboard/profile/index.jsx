@@ -246,13 +246,9 @@ const Profile = () => {
                 </div>
               )}
 
-              {
-                profile?.yearsOfExperience && (
-
-                  <p>{profile?.yearsOfExperience} years of experience</p>
-                )
-              }
-
+              {profile?.yearsOfExperience && (
+                <p>{profile?.yearsOfExperience} years of experience</p>
+              )}
             </div>
           </div>
 
@@ -276,7 +272,7 @@ const Profile = () => {
         open={open}
         handleClose={handleClose}
       >
-        <div className="px-[20px]  w-[500px] ">
+        <div className="px-[20px]  w-[550px] ">
           <Tabs tabs={editProfile} />
         </div>
       </Modal>

@@ -40,7 +40,7 @@ const MentorForm = ({
         <div>
           <label
             htmlFor="firstName"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white   font-medium block pb-2"
           >
             First Name
           </label>
@@ -64,7 +64,7 @@ const MentorForm = ({
         <div>
           <label
             htmlFor="lastName"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             Last Name
           </label>
@@ -88,7 +88,7 @@ const MentorForm = ({
         <div>
           <label
             htmlFor="email"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             Email
           </label>
@@ -106,132 +106,11 @@ const MentorForm = ({
           )}
         </div>
 
-        <div className="grid grid-cols-2 gap-5">
-          {/* Age */}
-          <div>
-            <label
-              htmlFor="email"
-              className="text-sm text-[#474747] font-medium block pb-2"
-            >
-              Age
-            </label>
-            <input
-              type="number"
-              placeholder="Age"
-              value={values.age}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              name="age"
-              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
-            />
-            {touched.age && errors.age && (
-              <p className="text-red-500 font-semibold text-sm">{errors.age}</p>
-            )}
-          </div>
-          {/* Gender */}
-          <div>
-            <label
-              htmlFor="email"
-              className="text-sm text-[#474747] font-medium block pb-2"
-            >
-              Gender
-            </label>
-            <select
-              name="gender"
-              value={values.gender}
-              onChange={handleChange}
-              onBlur={handleBlur}
-              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
-            >
-              <option value="">Select</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-
-            {touched.gender && errors.gender && (
-              <p className="text-red-500 font-semibold text-sm">
-                {errors.gender}
-              </p>
-            )}
-          </div>
-        </div>
-
-        {/* expertise */}
-        <div>
-          <label
-            htmlFor="email"
-            className="text-sm text-[#474747] font-medium block pb-2"
-          >
-            Expertise (2max)
-          </label>
-
-          <PrimaryMultiSelect
-            options={expertiseOptions}
-            value={values.expertise}
-            onChange={(selectedOptions) =>
-              setFieldValue("expertise", selectedOptions)
-            }
-            onBlur={() => handleBlur("expertise")}
-          />
-          {touched.expertise && errors.expertise && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.expertise}
-            </p>
-          )}
-        </div>
-        {/* yearsOfExperience */}
-        <div>
-          <label
-            htmlFor="yearsOfExperience"
-            className="text-sm text-[#474747] font-medium block pb-2"
-          >
-            Years Of Experience
-          </label>
-          <input
-            type="number"
-            placeholder="  Years Of Experience"
-            value={values.yearsOfExperience}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="yearsOfExperience"
-            className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
-          />
-          {touched.yearsOfExperience && errors.yearsOfExperience && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.yearsOfExperience}
-            </p>
-          )}
-        </div>
-
-        {/* linkedinUrl */}
-        <div>
-          <label
-            htmlFor="LinkedIn Profile URL"
-            className="text-sm text-[#474747] font-medium block pb-2"
-          >
-            LinkedIn Profile URL
-          </label>
-          <input
-            type="text"
-            placeholder="LinkedIn Profile URL"
-            value={values.linkedinUrl}
-            onChange={handleChange}
-            onBlur={handleBlur}
-            name="linkedinUrl"
-            className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
-          />
-          {touched.linkedinUrl && errors.linkedinUrl && (
-            <p className="text-red-500 font-semibold text-sm">
-              {errors.linkedinUrl}
-            </p>
-          )}
-        </div>
-
         {/* Password */}
         <div>
           <label
             htmlFor="password"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white   font-medium block pb-2"
           >
             Password
           </label>
@@ -276,11 +155,133 @@ const MentorForm = ({
           )}
         </div>
 
+        {/* <div className="grid grid-cols-2 gap-5">
+          Age
+          <div>
+            <label
+              htmlFor="email"
+              className="text-sm text-[#474747] font-medium block pb-2"
+            >
+              Age
+            </label>
+            <input
+              type="number"
+              placeholder="Age"
+              value={values.age}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              name="age"
+              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
+            />
+            {touched.age && errors.age && (
+              <p className="text-red-500 font-semibold text-sm">{errors.age}</p>
+            )}
+          </div>
+          Gender
+          <div>
+            <label
+              htmlFor="email"
+              className="text-sm text-[#474747] font-medium block pb-2"
+            >
+              Gender
+            </label>
+            <select
+              name="gender"
+              value={values.gender}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
+            >
+              <option value="">Select</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+
+            {touched.gender && errors.gender && (
+              <p className="text-red-500 font-semibold text-sm">
+                {errors.gender}
+              </p>
+            )}
+          </div>
+        </div> */}
+
+        {/* expertise */}
+        <div className="col-span-2">
+          <label
+            htmlFor="email"
+            className="text-sm text-white  font-medium block pb-2"
+          >
+            Expertise (2max)
+          </label>
+
+          <PrimaryMultiSelect
+            options={expertiseOptions}
+            value={values.expertise}
+            onChange={(selectedOptions) =>
+              setFieldValue("expertise", selectedOptions)
+            }
+            onBlur={() => handleBlur("expertise")}
+          />
+          {touched.expertise && errors.expertise && (
+            <p className="text-red-500 font-semibold text-sm">
+              {errors.expertise}
+            </p>
+          )}
+        </div>
+
+        {/* yearsOfExperience */}
+        <div>
+          <label
+            htmlFor="yearsOfExperience"
+            className="text-sm text-white   font-medium block pb-2"
+          >
+            Years Of Experience
+          </label>
+          <input
+            type="number"
+            placeholder="  Years Of Experience"
+            value={values.yearsOfExperience}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="yearsOfExperience"
+            className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
+          />
+          {touched.yearsOfExperience && errors.yearsOfExperience && (
+            <p className="text-red-500 font-semibold text-sm">
+              {errors.yearsOfExperience}
+            </p>
+          )}
+        </div>
+
+        {/* linkedinUrl */}
+        <div>
+          <label
+            htmlFor="LinkedIn Profile URL"
+            className="text-sm text-white   font-medium block pb-2"
+          >
+            LinkedIn Profile URL
+          </label>
+          <input
+            type="text"
+            placeholder="LinkedIn Profile URL"
+            value={values.linkedinUrl}
+            onChange={handleChange}
+            onBlur={handleBlur}
+            name="linkedinUrl"
+            className=" border border-[#D0D5DD] rounded-[8px] outline-0 w-full py-3 px-4"
+          />
+          {touched.linkedinUrl && errors.linkedinUrl && (
+            <p className="text-red-500 font-semibold text-sm">
+              {errors.linkedinUrl}
+            </p>
+          )}
+        </div>
+
         {/* about */}
         <div className="col-span-2">
           <label
             htmlFor="about"
-            className="text-sm text-[#474747] font-medium block pb-2"
+            className="text-sm text-white  font-medium block pb-2"
           >
             About
           </label>

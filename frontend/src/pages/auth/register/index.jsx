@@ -85,8 +85,6 @@ const Signup = () => {
       "password",
       "role",
       "about",
-      "age",
-      "gender",
       ...(activeTab === 0 ? ["interest"] : []),
       ...(activeTab === 1
         ? ["yearsOfExperience", "linkedinUrl", "expertise"]
@@ -137,7 +135,8 @@ const Signup = () => {
   ];
 
   return (
-    <div className="relative">
+    <div className="bg-authBg bg-cover bg-center bg-no-repeat bg-[#000000CC] relative">
+      <div className="absolute inset-0 bg-black opacity-80"></div>
       <div className="relative py-2 px-5">
         <div className="lg:w-[60%] mx-auto">
           <div>
@@ -146,9 +145,9 @@ const Signup = () => {
             </div>
           </div>
           <div className="pt-3 pb-2 text-center">
-            <p className="text-[#475467] text-sm">
+            <p className="text-white  text-sm">
               Already have an account?{" "}
-              <span className="text-[#004225] font-semibold text-sm">
+              <span className="text-[#536de2] font-semibold text-sm">
                 <Link to="/login">Sign In</Link>{" "}
               </span>
             </p>
